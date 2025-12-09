@@ -72,13 +72,13 @@ const Sidebar = ({ nowMonth, nowYear, nowDay, setMonth, setYear, setDay }) => {
 
       <div className="text-xs text-gray-300 grid grid-cols-7 text-center">
         {week.map((nameDay) => (
-          <div key={nameDay} className="font-bold">
+          <div key={nameDay} className="font-bold py-2">
             {nameDay}
           </div>
         ))}
 
         {daysClear.map((day, index) => (
-          <div key={index}></div>
+          <div key={index} className="py-2"></div>
         ))}
 
         {days.map((day) => (
@@ -87,7 +87,7 @@ const Sidebar = ({ nowMonth, nowYear, nowDay, setMonth, setYear, setDay }) => {
             onClick={() => setDay(day)}
             className={`${
               nowDay === day ? "bg-cyan-900" : ""
-            } rounded-sm hover:bg-cyan-800 hover:cursor-pointer hover:text-gray-200`}
+            } rounded-sm hover:bg-cyan-800 hover:cursor-pointer hover:text-gray-200 py-2`}
           >
             {day}
           </div>
