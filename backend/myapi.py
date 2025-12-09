@@ -18,11 +18,14 @@ class User(Base):
     __tablename__ = "users"
 
     username = Column("username", String, primary_key=True, unique=True)
+    name = Column("name", String)
     password = Column("password", String)
 
-    def __init__(self, username, password):
+    def __init__(self, username, name, password):
         self.username = username
+        self.name = name
         self.password = password
+
 
 
 # Tabela de to-dos
@@ -49,11 +52,19 @@ class Todo(Base):
 # Cria as tabelas
 Base.metadata.create_all(bind=db)
 
-print(datetime.isoformat(datetime.now(), timespec="seconds"))
-
 
 # DEV: Mostra todos os registros do DB
 @app.get("/")
 async def root():
     """DEV: Listagem de todos os to-dos do DB."""
-    return {"message": "Hello World"}
+    todos = session.query(Todo).all()
+    return todos
+
+
+# Cria um novo usuário
+@app.post("/users/create")
+async def create_user(username: str, name: str, password: str):
+    user = User(username, name, password)
+    session.add(user)
+    session.commit()
+    return {"message": "User created"}
