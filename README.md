@@ -3,7 +3,6 @@
 ## Roadmap
 
 - [ ] Login
-  - [ ] Construir UI para criar usuário.
-  - [ ] Construir UI para login de usuário.
-  - [ ] Criar Webhook na API de backend para criação de usuários.
-  - [ ] Criar Webhook na API de backend para autenticação de usuários.
+  - [ ] O usuário pode se registrar.
+  - [ ] O usuário pode fazer login.
+  - [ ] O usuário pode alterar a senha.
