@@ -4,10 +4,10 @@ import { PiUserCirclePlusFill } from "react-icons/pi";
 const Login = () => {
   return (
     <div className="h-screen w-screen flex justify-center items-center">
-      <div className="border-cyan-800 border w-xl m-2 overflow-hidden rounded-4xl shadow-2xl">
-        <div className="bg-cyan-800 h-6"></div>
+      <div className="border-cyan-800 border w-md m-2 overflow-hidden rounded-3xl shadow-2xl">
+        <div className="bg-cyan-800 h-5"></div>
         <div className="flex justify-center m-4">
-          <PiUserCircleFill className="h-50 w-50 text-cyan-800" />
+          <PiUserCircleFill className="h-50 w-50 text-cyan-700" />
         </div>
         <div className="p-6">
           Username:
@@ -23,7 +23,7 @@ const Login = () => {
             placeholder="Enter your password"
           />
         </div>
-        <div className="bg-cyan-800 h-6"></div>
+        <div className="bg-cyan-800 h-5"></div>
       </div>
     </div>
   );
