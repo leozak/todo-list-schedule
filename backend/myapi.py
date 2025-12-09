@@ -54,17 +54,45 @@ Base.metadata.create_all(bind=db)
 
 
 # DEV: Mostra todos os registros do DB
-@app.get("/")
-async def root():
+@app.get("/{username}")
+async def root(username: str):
     """DEV: Listagem de todos os to-dos do DB."""
-    todos = session.query(Todo).all()
+    todos = session.query(Todo).filter(Todo.username == username).all()
     return todos
 
 
 # Cria um novo usuário
 @app.post("/users/create")
 async def create_user(username: str, name: str, password: str):
+    """Cria um novo usuário."""
     user = User(username, name, password)
     session.add(user)
     session.commit()
     return {"message": "User created"}
+
+
+@app.post("/users/update")
+async def update_user(username: str, name: str, password: str):
+    """Atualiza um usuário."""
+    user = session.query(User).filter(User.username == username).first()
+    user.name = name
+    user.password = password
+    session.commit()
+    return {"message": "User updated"}
+
+@app.post("/users/login")
+async def login_user(username: str, password: str):
+    """Login de um usuário."""
+    user = session.query(User).filter(User.username == username).first()
+    print("username", username)
+    print("password", password)
+
+    if user and user.password == password:
+        return {"name": user.name,
+                "username": user.username,
+                "message": "Login successful",
+                "success": True,
+        }
+    else:
+        return {"message": "Invalid username or password",
+                "success": False,}
