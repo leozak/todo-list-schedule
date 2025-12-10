@@ -1,4 +1,6 @@
 const api = (url) => {
+  const url_base = "http://localhost:8000";
+
   const todos = [
     {
       id: 1,
