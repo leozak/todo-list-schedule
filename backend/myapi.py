@@ -1,12 +1,21 @@
 from datetime import datetime, timezone
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Configura o FastAPI
 app = FastAPI(title="To-do List Schedule", version="0.1")
 
-# Configura o DB com SQLAlchemy
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    )
+
+# SQLAlchemy
 db = create_engine("sqlite:///to-do-list.db")
 Session = sessionmaker(bind=db)
 session = Session()
@@ -25,7 +34,6 @@ class User(Base):
         self.username = username
         self.name = name
         self.password = password
-
 
 
 # Tabela de to-dos

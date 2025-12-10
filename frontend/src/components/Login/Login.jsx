@@ -2,12 +2,16 @@ import { useState } from "react";
 import { PiUserCircleFill } from "react-icons/pi";
 import { PiUserCirclePlusFill } from "react-icons/pi";
 import { FaUserEdit } from "react-icons/fa";
+import { ImSpinner6 } from "react-icons/im";
 
 const Login = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const [newUser, setNewUser] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const [errorName, setErrorName] = useState({
     error: false,
@@ -180,7 +184,15 @@ const Login = () => {
                 onClick={handleSignIn}
                 className="w-full flex text-gray-200 bg-cyan-700 hover:bg-cyan-800 hover:cursor-pointer my-5 mt-6 rounded-xl p-2 items-center justify-center"
               >
-                <FaUserEdit /> &nbsp; Sign in
+                {loading ? (
+                  <>
+                    <ImSpinner6 /> &nbsp; Sending...
+                  </>
+                ) : (
+                  <>
+                    <FaUserEdit /> &nbsp; Sign in
+                  </>
+                )}
               </button>
             </div>
 
@@ -269,7 +281,15 @@ const Login = () => {
                 onClick={handleSignUp}
                 className="w-full flex text-gray-200 bg-cyan-700 hover:bg-cyan-800 hover:cursor-pointer my-5 mt-6 rounded-xl p-2 items-center justify-center"
               >
-                <FaUserEdit /> &nbsp; Sign up
+                {loading ? (
+                  <>
+                    <ImSpinner6 /> &nbsp; Sending...
+                  </>
+                ) : (
+                  <>
+                    <FaUserEdit /> &nbsp; Sign up
+                  </>
+                )}
               </button>
             </div>
             <div className="text-center m-4">
