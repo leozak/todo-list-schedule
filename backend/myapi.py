@@ -30,6 +30,10 @@ class UserSchema(BaseModel):
     username: str
     password: str
 
+class LoginSchema(BaseModel):
+    username: str
+    password: str
+
 # Tabela de usuários
 class User(Base):
     __tablename__ = "users"
@@ -130,19 +134,35 @@ async def update_user(username: str, name: str, password: str):
     session.commit()
     return {"message": "User updated"}
 
-@app.post("/users/login")
-async def login_user(username: str, password: str):
-    """Login de um usuário."""
-    user = session.query(User).filter(User.username == username).first()
-    print("username", username)
-    print("password", password)
 
-    if user and user.password == password:
-        return {"name": user.name,
-                "username": user.username,
-                "message": "Login successful",
+@app.post("/users/login")
+async def login_user(user: LoginSchema):
+    """Login de um usuário."""
+
+    print("LOGIN")
+
+    existing_user = session.query(User).filter_by(username=user.username, password=user.password).first()
+
+    if (existing_user):
+        print("username", existing_user.username)
+        print("password", existing_user.password)
+        return {
                 "success": True,
-        }
+                "message": "User logged in",
+            }
     else:
-        return {"message": "Invalid username or password",
-                "success": False,}
+        return {
+                "success": False,
+                "message": "User not found",
+            }
+    
+
+    # if user and user.password == password:
+    #     return {"name": user.name,
+    #             "username": user.username,
+    #             "message": "Login successful",
+    #             "success": True,
+    #     }
+    # else:
+    #     return {"message": "Invalid username or password",
+    #             "success": False,}

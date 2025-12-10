@@ -6,14 +6,14 @@ import { ImSpinner6 } from "react-icons/im";
 
 const url_base = "http://127.0.0.1:8000";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [newUser, setNewUser] = useState(false);
-
   const [loading, setLoading] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
 
   const [errorName, setErrorName] = useState({
     error: false,
@@ -87,6 +87,7 @@ const Login = () => {
       setErrorPassword({ error: false, message: "" });
     }
 
+    // Send the data to the backend
     try {
       const response = await fetch(url_base + "/users/create", {
         method: "POST",
@@ -99,6 +100,7 @@ const Login = () => {
           password: password,
         }),
       }).catch((error) => {
+        is_ok = false;
         console.log(error);
       });
 
@@ -115,26 +117,20 @@ const Login = () => {
         }
       }
     } catch (error) {
+      is_ok = false;
       console.log(error);
     } finally {
       setLoading(false);
     }
-
-    //
-    // Verificar se o usuário ja existe
-    //
-
-    //
-    // Aqui colocar a lógica de cadastro
-    //
 
     if (is_ok) {
       setNewUser(false);
     }
   };
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
     let is_ok = true;
+
     if (username === "") {
       setErrorUsername({ error: true, message: "Please enter a username." });
       is_ok = false;
@@ -155,9 +151,40 @@ const Login = () => {
       setErrorPassword({ error: false, message: "" });
     }
 
-    //
-    // Aqui colocar a lógica de login
-    //
+    // Send the data to the backend
+    if (is_ok) {
+      try {
+        const response = await fetch(url_base + "/users/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+        }).catch((error) => {
+          is_ok = false;
+          console.log(error);
+        });
+
+        const data = await response.json();
+
+        console.log(data.success);
+
+        if (data.success) {
+          setLoginFailed(false);
+          setIsLoggedIn(true);
+        } else {
+          is_ok = false;
+          setLoginFailed(true);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -179,12 +206,17 @@ const Login = () => {
             <h1 className="block text-3xl text-center font-bold text-gray-600">
               Welcome Back!
             </h1>
-            <p className="text-center m-2">
+            <p className="text-center mt-2">
               Sign in to organize your life efficiently.
             </p>
 
             {/* Login form */}
-            <div className="p-6">
+            <div className="py-4 px-8">
+              {loginFailed && (
+                <p className="text-red-500 text-base text-center mb-4">
+                  Invalid username or password.
+                </p>
+              )}
               <label htmlFor="username">Username*</label>
               <input
                 id="username"
@@ -269,7 +301,7 @@ const Login = () => {
               Create an account and optimize your life.
             </p>
             {/* Login form */}
-            <div className="p-6">
+            <div className="py-4 px-8">
               <label htmlFor="name">Full Name*</label>
               <input
                 id="name"
