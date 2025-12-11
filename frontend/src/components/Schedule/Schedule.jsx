@@ -1,5 +1,6 @@
 import { FaCrosshairs, FaSearch } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { ImSpinner3 } from "react-icons/im";
 
 import NavBar from "./NavBar";
 import ScheduleView from "./ScheduleView";
@@ -31,6 +32,10 @@ const Schedule = ({
 
       {/* Schedule View */}
       <ScheduleView todos={todos} />
+
+      <div className="p-20">
+        <ImSpinner3 className="animate-spin w-20 h-20" />
+      </div>
 
       <AddNewTodo />
     </div>

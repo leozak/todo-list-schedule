@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
-import AddNewTodoForm from "./AddNewTodoForm";
+import AddNewTodoForm from "./TodoForm";
+import TodoForm from "./TodoForm";
 
 const AddNewTodo = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleAddNewTodo = () => {
-    console.log("Add New Todo");
-    console.log(openForm);
     setOpenForm(true);
   };
 
@@ -22,9 +21,10 @@ const AddNewTodo = () => {
         <FaPlus className="w-16 h-16 p-4 bg-cyan-700 hover:bg-cyan-600 active:bg-cyan-500 text-cyan-200 transition-colors rounded-full shadow-md active:shadow shadow-gray-900" />
       </button>
 
-      <AddNewTodoForm
+      <TodoForm
         openForm={openForm}
         setCloseForm={() => setOpenForm(false)}
+        action="add"
       />
     </>
   );
