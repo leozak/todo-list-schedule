@@ -3,6 +3,7 @@ import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 import NavBar from "./NavBar";
 import ScheduleView from "./ScheduleView";
+import AddNewTodo from "./AddNewTodo";
 
 const Schedule = ({
   nowMonth,
@@ -15,7 +16,7 @@ const Schedule = ({
   setTodos,
 }) => {
   return (
-    <div className="p-2 w-full">
+    <div className="relative p-2 w-full bg-neutral-300">
       {/* Nav Bar Schedule View */}
       <NavBar
         nowMonth={nowMonth}
@@ -30,6 +31,8 @@ const Schedule = ({
 
       {/* Schedule View */}
       <ScheduleView todos={todos} />
+
+      <AddNewTodo />
     </div>
   );
 };
