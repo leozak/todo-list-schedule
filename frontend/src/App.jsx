@@ -50,6 +50,7 @@ function App() {
               setMonth={setMonth}
               setYear={setYear}
               setDay={setDay}
+              user={user}
             />
 
             <Schedule
