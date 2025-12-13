@@ -7,6 +7,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import SidebarCollapseButton from "./SidebarCollapseButton";
 import SidebarTitle from "./SidebarTitle";
 import SidebarCallendar from "./SidebarCallendar";
+import SidebarUserMenu from "./SidebarUserMenu";
 
 const Sidebar = ({
   nowMonth,
@@ -21,16 +22,18 @@ const Sidebar = ({
 
   return (
     <div className="relative min-w-60 min-h-full h-screen p-2 bg-cyan-950">
-      {/* HEADER */}
       <div className="flex p-1 mb-5 text-gray-400 items-center">
+        {/* COLLAPSE  BUTTON */}
         <SidebarCollapseButton
           sidebarCollapsed={sidebarCollapsed}
           setSidebarCollapsed={setSidebarCollapsed}
         />
 
+        {/* TITLE */}
         <SidebarTitle />
       </div>
 
+      {/* CALLENDAR */}
       <SidebarCallendar
         month={nowMonth}
         year={nowYear}
@@ -40,15 +43,8 @@ const Sidebar = ({
         setDay={setDay}
       />
 
-      {/* USER INFO */}
-      <div className="absolute bottom-4 p-2 text-gray-400 text-sm font-semibold">
-        <button
-          className="flex items-center py-1 gap-x-2 hover:text-gray-200 hover:cursor-pointer"
-          title="User options"
-        >
-          <FaUserCog /> {user.name}
-        </button>
-      </div>
+      {/* USER MENU */}
+      <SidebarUserMenu user={user} />
     </div>
   );
 };
