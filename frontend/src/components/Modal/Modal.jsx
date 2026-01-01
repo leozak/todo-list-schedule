@@ -30,7 +30,7 @@ const Modal = ({ title, callbackClose, children }) => {
           {/* MODAL CLOSE BUTTON */}
           <button
             onClick={handleCloseForm}
-            className="absolute top-2 right-2 p-1 rounded-sm text-neutral-700 hover:text-neutral-100 hover:cursor-pointer"
+            className="absolute top-2 right-2 p-1 rounded-sm text-neutral-700 hover:text-neutral-500 hover:cursor-pointer"
           >
             <IoClose className="w-6 h-6" />
           </button>

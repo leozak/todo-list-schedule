@@ -4,6 +4,8 @@ import { DateContext } from "../../context/DateContext";
 
 const TaskEdit = ({ task, setTask }) => {
   const { year, month, day } = useContext(DateContext);
+  const _month = month < 9 ? "0" + (month + 1) : month + 1;
+  const _day = day < 10 ? "0" + day : day;
 
   const [id, setId] = useState(0);
   const [title, setTitle] = useState("");
@@ -11,7 +13,7 @@ const TaskEdit = ({ task, setTask }) => {
   const [priority, setPriority] = useState(0);
   const [pin, setPin] = useState(false);
   const [done, setDone] = useState(false);
-  const [date, setDate] = useState(year + "-" + (month + 1) + "-" + day);
+  const [date, setDate] = useState(year + "-" + _month + "-" + _day);
 
   useEffect(() => {
     setTask({
@@ -127,7 +129,7 @@ const TaskEdit = ({ task, setTask }) => {
               type="checkbox"
               checked={pin}
               onChange={(e) => setPin(e.target.checked)}
-              className="accent-cyan-800 w-5 h-5 mr-3 hover:cursor-pointer"
+              className="accent-cyan-600 w-5 h-5 mr-3 hover:cursor-pointer"
             />
             Fixar tarefa
           </label>
@@ -145,7 +147,7 @@ const TaskEdit = ({ task, setTask }) => {
               type="checkbox"
               checked={done}
               onChange={(e) => setDone(e.target.checked)}
-              className="accent-cyan-800 w-5 h-5 mr-3 hover:cursor-pointer"
+              className="accent-cyan-600 w-5 h-5 mr-3 hover:cursor-pointer"
             />
             Concluida
           </label>

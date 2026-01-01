@@ -11,7 +11,7 @@ const ScheduleView = ({ todos }) => {
         {todos.map((todo) => (
           <div
             key={todo.id}
-            className="flex rounded-md overflow-hidden border-red-700 border mb-2 hover:bg-red-100 hover:cursor-pointer"
+            className="flex rounded-md overflow-hidden border-red-700 border mb-1 scale-95 transition-all hover:bg-gray-300 hover:cursor-pointer hover:scale-100"
           >
             <div className="bg-red-700 w-2"></div>
             <div className="py-0.5 px-2">{todo.title}</div>

@@ -4,7 +4,7 @@ import AddNewTask from "./AddNewTask";
 
 const Schedule = ({ todos, setTodos }) => {
   return (
-    <div className="relative p-2 w-full bg-neutral-300">
+    <div className="relative p-2 w-full bg-neutral-200">
       <NavBar />
 
       <hr className="my-2 text-gray-300" />

@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { FaPlus } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 import Modal from "../Modal/Modal";
 import TaskEdit from "./TaskEdit";
@@ -30,6 +31,9 @@ const AddNewTask = () => {
     //
     console.log(task);
     console.log(task.title);
+    if (task.title === "") {
+      toast.error("Entre com um título.");
+    }
   };
 
   return (
@@ -53,13 +57,13 @@ const AddNewTask = () => {
           <div className="flex justify-center mt-8">
             <button
               onClick={handleSaveNewTask}
-              className="bg-green-900 py-2 px-8 rounded-xl mx-4 hover:cursor-pointer hover:bg-green-800 active:bg-green-700"
+              className="bg-green-800 text-white py-2 px-8 rounded-xl mx-4 hover:cursor-pointer hover:bg-green-700 active:bg-green-600"
             >
               Salvar
             </button>
             <button
               onClick={() => setOpenForm(false)}
-              className="bg-red-900 py-2 px-8 rounded-xl mx-4 hover:cursor-pointer hover:bg-red-800 active:bg-red-700"
+              className="bg-red-800 text-white py-2 px-8 rounded-xl mx-4 hover:cursor-pointer hover:bg-red-700 active:bg-red-600"
             >
               Cancelar
             </button>
