@@ -7,13 +7,7 @@ import DateProvider from "./context/DateContext.jsx";
 
 import api from "./api.js";
 
-const nowDate = new Date();
-
 function App() {
-  const [year, setYear] = useState(nowDate.getUTCFullYear());
-  const [month, setMonth] = useState(nowDate.getUTCMonth());
-  const [day, setDay] = useState(nowDate.getUTCDate());
-
   const [todos, setTodos] = useState([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,34 +39,10 @@ function App() {
           <Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />
         ) : (
           <>
-            <DateProvider
-              year={year}
-              setYear={setYear}
-              month={month}
-              setMonth={setMonth}
-              day={day}
-              setDay={setDay}
-            >
-              <SideBar
-                nowMonth={month}
-                nowYear={year}
-                nowDay={day}
-                setMonth={setMonth}
-                setYear={setYear}
-                setDay={setDay}
-                user={user}
-              />
+            <DateProvider>
+              <SideBar user={user} />
 
-              <Schedule
-                nowMonth={month}
-                nowYear={year}
-                nowDay={day}
-                setMonth={setMonth}
-                setYear={setYear}
-                setDay={setDay}
-                todos={todos}
-                setTodos={setTodos}
-              />
+              <Schedule todos={todos} setTodos={setTodos} />
             </DateProvider>
           </>
         )}

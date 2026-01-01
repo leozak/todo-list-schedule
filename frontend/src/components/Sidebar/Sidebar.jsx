@@ -1,23 +1,11 @@
 import { useState } from "react";
 
-import { FaCalendarAlt, FaUserCog } from "react-icons/fa";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
-import { GiHamburgerMenu } from "react-icons/gi";
-
 import SidebarCollapseButton from "./SidebarCollapseButton";
 import SidebarTitle from "./SidebarTitle";
 import SidebarCallendar from "./SidebarCallendar";
 import SidebarUserMenu from "./SidebarUserMenu";
 
-const Sidebar = ({
-  nowMonth,
-  nowYear,
-  nowDay,
-  setMonth,
-  setYear,
-  setDay,
-  user,
-}) => {
+const Sidebar = ({ user }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
@@ -34,14 +22,7 @@ const Sidebar = ({
       </div>
 
       {/* CALLENDAR */}
-      <SidebarCallendar
-        month={nowMonth}
-        year={nowYear}
-        day={nowDay}
-        setMonth={setMonth}
-        setYear={setYear}
-        setDay={setDay}
-      />
+      <SidebarCallendar />
 
       {/* USER MENU */}
       <SidebarUserMenu user={user} />

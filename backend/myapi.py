@@ -49,7 +49,7 @@ class User(Base):
         self.password = password
 
 
-class TodosSchema(BaseModel):
+class TaskSchema(BaseModel):
     id: int
     title: str
     description: str
@@ -59,8 +59,8 @@ class TodosSchema(BaseModel):
     username: str
 
 # Tabela de to-dos
-class Todo(Base):
-    __tablename__ = "todos"
+class Task(Base):
+    __tablename__ = "task"
 
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     title = Column("title", String)
@@ -85,9 +85,9 @@ Base.metadata.create_all(bind=db)
 # DEV: Mostra todos os registros do DB
 @app.get("/{username}")
 async def root(username: str):
-    """DEV: Listagem de todos os to-dos do DB."""
-    todos = session.query(Todo).filter(Todo.username == username).all()
-    return todos
+    """Listagem de todas as tasks do usuário."""
+    task = session.query(Task).filter(Task.username == username).all()
+    return task
 
 
 # Cria um novo usuário
@@ -121,6 +121,33 @@ async def create_user(user: UserSchema):
     finally:
         session.close()
 
+
+@app.post("/tasks/create")
+async def create_task(task: TaskSchema):
+    """Cria uma nova task."""
+    try:
+        new_task = Task(title=task.title, description=task.description, priority=task.priority, done=task.done, date=task.date, username=task.username)
+        session.add(new_task)
+        session.commit()
+        return {
+            "success": True,
+            "message": "Task created",
+            "id": new_task.id,
+            "title": new_task.title,
+            "description": new_task.description,
+            "priority": new_task.priority,
+            "date": new_task.date,
+            "done": new_task.done,
+            "username": new_task.username
+        }
+    except Exception as e:
+        session.rollback()
+        return {
+            "success": False,
+            "message": "Error creating task"
+        }
+    finally:
+        session.close()
 
 
 # @app.post("/users/update")

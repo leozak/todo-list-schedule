@@ -1,41 +1,45 @@
 import { useContext, useEffect, useState } from "react";
 
+import { DateContext } from "../../context/DateContext";
+
 const TaskEdit = ({ task, setTask }) => {
+  const { year, month, day } = useContext(DateContext);
+
+  const [id, setId] = useState(0);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState(0);
   const [pin, setPin] = useState(false);
   const [done, setDone] = useState(false);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(year + "-" + (month + 1) + "-" + day);
+
+  useEffect(() => {
+    setTask({
+      id: id,
+      title: title,
+      description: description,
+      priority: priority,
+      pin: pin,
+      done: done,
+      date: date,
+    });
+  }, [id, title, description, priority, pin, done, date]);
 
   useEffect(() => {
     if (task) {
+      setId(task.id);
       setTitle(task.title);
       setDescription(task.description);
       setPriority(task.priority);
       setPin(task.pin);
       setDone(task.done);
       setDate(task.date);
-      console.log("aqui", task.date);
-    } else {
-      setTitle("");
-      setDescription("");
-      setPriority(0);
-      setPin(false);
-      setDone(false);
-      const _date = new Date();
-      setDate(
-        _date.getFullYear() +
-          "-" +
-          (_date.getMonth() + 1) +
-          "-" +
-          _date.getDate()
-      );
     }
   }, []);
+
   return (
     <>
-      <div>
+      <div className="p-4 md:min-w-lg">
         {/* TITLE: input */}
         <div className="mt-4">
           <label
@@ -147,8 +151,6 @@ const TaskEdit = ({ task, setTask }) => {
           </label>
         </div>
       </div>
-      <div className="mt-10">{JSON.stringify(task)}</div>
-      <div className="mt-10">{date}</div>
     </>
   );
 };

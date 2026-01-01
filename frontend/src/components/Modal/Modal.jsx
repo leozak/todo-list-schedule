@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 
-const Modal = ({ children, title, callbackClose }) => {
+const Modal = ({ title, callbackClose, children }) => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleCloseForm = () => {
@@ -15,18 +15,15 @@ const Modal = ({ children, title, callbackClose }) => {
   return (
     <>
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-          handleCloseForm();
-        }}
         className={`fixed flex inset-0 justify-center items-center opacity-90 transition-colors
             ${openForm ? "bg-black/90 visible" : "bg-black/0 invisible"}
             `}
-      >
+      ></div>
+      <div className="fixed flex inset-0 justify-center items-center">
         {/* MODAL TASK */}
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`bg-neutral-100/90 m-20 rounded-2xl shadow-xl shadow-black p-6 transition-all
+          className={`bg-neutral-100 m-20 rounded-2xl shadow-xl shadow-black p-6 transition-all
             ${openForm ? "scale-100 opacity-100" : "scale-125 opacity-0"}
             `}
         >

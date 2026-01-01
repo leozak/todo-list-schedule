@@ -17,8 +17,12 @@ const ScheduleView = ({ todos }) => {
             <div className="py-0.5 px-2">{todo.title}</div>
           </div>
         ))}
-        <div>
-          Year: {year} Month: {month + 1} Day: {day}
+        <div className="flex rounded-md overflow-hidden border-red-700 border mb-2 hover:bg-red-100 hover:cursor-pointer">
+          Year: {year}
+          <br />
+          Month: {month}
+          <br />
+          Day: {day}
         </div>
       </div>
     </div>

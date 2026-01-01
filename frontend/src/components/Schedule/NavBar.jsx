@@ -1,9 +1,13 @@
+import { useContext } from "react";
+
 import { FaCrosshairs, FaSearch } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
+import { DateContext } from "../../context/DateContext";
+
 const nowDate = new Date();
 
-const month = [
+const months = [
   "January",
   "February",
   "March",
@@ -18,7 +22,11 @@ const month = [
   "December",
 ];
 
-const NavBar = ({ nowMonth, nowYear, nowDay, setMonth, setYear, setDay }) => {
+// const NavBar = ({ month, year, day, setMonth, setYear, setDay }) => {
+const NavBar = () => {
+  const { year, setYear, month, setMonth, day, setDay } =
+    useContext(DateContext);
+
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
   };
@@ -44,15 +52,15 @@ const NavBar = ({ nowMonth, nowYear, nowDay, setMonth, setYear, setDay }) => {
           title="Previous Day"
           className="mr-1 text-gray-600 bg-gray-300 p-1 rounded-md hover:cursor-pointer hover:bg-gray-400 hover:text-gray-800 active:bg-gray-300"
           onClick={() => {
-            if (nowDay === 1) {
-              if (nowMonth === 0) {
-                setYear(nowYear - 1);
+            if (day === 1) {
+              if (month === 0) {
+                setYear(year - 1);
               }
-              setMonth((nowMonth - 1 + 12) % 12);
-              setDay(getDaysInMonth(nowMonth - 1, nowYear));
+              setMonth((month - 1 + 12) % 12);
+              setDay(getDaysInMonth(month - 1, year));
             } else {
-              setMonth(nowMonth);
-              setDay(nowDay - 1);
+              setMonth(month);
+              setDay(day - 1);
             }
           }}
         >
@@ -64,15 +72,15 @@ const NavBar = ({ nowMonth, nowYear, nowDay, setMonth, setYear, setDay }) => {
           title="Next Day"
           className="mr-1 text-gray-600 bg-gray-300 p-1 rounded-md hover:cursor-pointer hover:bg-gray-400 hover:text-gray-800 active:bg-gray-300"
           onClick={() => {
-            if (nowDay === getDaysInMonth(nowMonth, nowYear)) {
-              if (nowMonth === 11) {
-                setYear(nowYear + 1);
+            if (day === getDaysInMonth(month, year)) {
+              if (month === 11) {
+                setYear(year + 1);
               }
-              setMonth((nowMonth + 1) % 12);
+              setMonth((month + 1) % 12);
               setDay(1);
             } else {
-              setMonth(nowMonth);
-              setDay(nowDay + 1);
+              setMonth(month);
+              setDay(day + 1);
             }
           }}
         >
@@ -80,7 +88,7 @@ const NavBar = ({ nowMonth, nowYear, nowDay, setMonth, setYear, setDay }) => {
         </button>
 
         <span className="ml-4">
-          {nowDay}, {month[nowMonth]} {nowYear}
+          {day}, {months[month]} {year}
         </span>
       </div>
       <div className="flex items-center border border-gray-400 rounded-xl pl-1">

@@ -1,6 +1,8 @@
-import { useEffect } from "react";
+import { useContext } from "react";
 import { FaCalendarAlt, FaUserCog } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+
+import { DateContext } from "../../context/DateContext";
 
 const months = [
   "January",
@@ -19,7 +21,10 @@ const months = [
 
 const week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-const SidebarCallendar = ({ month, year, day, setMonth, setYear, setDay }) => {
+const SidebarCallendar = () => {
+  const { year, setYear, month, setMonth, day, setDay } =
+    useContext(DateContext);
+
   const getDaysInMonth = (month, year) => {
     return new Date(year, month + 1, 0).getDate();
   };

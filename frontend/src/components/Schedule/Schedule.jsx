@@ -2,26 +2,10 @@ import NavBar from "./NavBar";
 import ScheduleView from "./ScheduleView";
 import AddNewTask from "./AddNewTask";
 
-const Schedule = ({
-  nowMonth,
-  nowYear,
-  nowDay,
-  setMonth,
-  setYear,
-  setDay,
-  todos,
-  setTodos,
-}) => {
+const Schedule = ({ todos, setTodos }) => {
   return (
     <div className="relative p-2 w-full bg-neutral-300">
-      <NavBar
-        nowMonth={nowMonth}
-        nowYear={nowYear}
-        nowDay={nowDay}
-        setMonth={setMonth}
-        setYear={setYear}
-        setDay={setDay}
-      />
+      <NavBar />
 
       <hr className="my-2 text-gray-300" />
 
