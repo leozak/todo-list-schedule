@@ -5,10 +5,14 @@ import { toast } from "react-toastify";
 import Modal from "../Modal/Modal";
 import TaskEdit from "./TaskEdit";
 
+import { TasksContext } from "../../context/TasksContext";
+
 const url_base = "http://127.0.0.1:8000";
 
 const AddNewTask = ({ user }) => {
   const [openForm, setOpenForm] = useState(false);
+
+  const { refresh } = useContext(TasksContext);
 
   const [task, setTask] = useState({
     id: 0,
@@ -49,6 +53,7 @@ const AddNewTask = ({ user }) => {
 
       if (response.status === 200) {
         toast.success("Tarefa criada com sucesso.");
+        refresh();
         setOpenForm(false);
       } else {
         console.log(response.statusText);

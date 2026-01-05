@@ -6,6 +6,9 @@ const TaskCard = ({ task }) => {
     >
       <div className="bg-red-700 w-2"></div>
       <div className="py-0.5 px-2">{task.title}</div>
+      <div>
+        <div className="text-xs text-gray-400">{task.date}</div>
+      </div>
     </div>
   );
 };
