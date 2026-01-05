@@ -38,7 +38,6 @@ const TasksProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.status === 200) {
-        toast.success("Tarefas carregadas com sucesso.");
         setTasks(data);
       } else {
         console.log(response);
