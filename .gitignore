@@ -10,6 +10,17 @@
 *.sln
 *.sw?
 
+# Docker
+.docker/
+
+# Google Cloud
+gcloud-service-key.json
+*.json.enc
+
+# OS
+.DS_Store
+Thumbs.db
+
 # Logs
 logs
 *.log

@@ -6,17 +6,42 @@
 
 ![Tela de Edição](./frontend/public/screenshot-02.png)
 
+## Tecnologias
+
+- **Frontend:** React + Vite
+- **Backend:** FastAPI + Python
+- **Infraestrutura:** Google Cloud (Cloud Run + Cloud Storage)
+
 ## Bibliotecas Utilizadas
 
 ### Frontend
 
-- react-icons: icones usados na aplicação.
-- tailwindcss: framework css utilizado na aplicação.
-- class-variance-authority: framework css utilizado na aplicação.
+- **react-icons:** biblioteca de icons.
+- **tailwindcss:** framework de estilização.
+- **class-variance-authority:** gerenciamento de classes de estilização.
 
 ### Backend
 
-- uvicorn: servidor web utilizado na aplicação.
-- fastapi: framework utilizado na aplicação.
-- sqlalchemy: ORM utilizado na aplicação.
-- pydantic: framework utilizado na aplicação.c
+- **fastapi:** construtor da API.
+- **sqlalchemy:** ORM para o banco de dados.
+- **pydantic:** validação de dados.
+
+## Desenvolvimento Local
+
+### Backend
+
+```bash
+cd backend
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+uvicorn myapi:app --reload
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```

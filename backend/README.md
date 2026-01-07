@@ -5,3 +5,9 @@
 ```shell
 uvicorn myapi:app --reload
 ```
+
+## Gerar o arquivo `requirements.txt`
+
+```shell
+pipreqs . --force --encoding=utf-8
+```
