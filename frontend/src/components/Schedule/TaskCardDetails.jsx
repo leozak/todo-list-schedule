@@ -29,6 +29,19 @@ const TaskCardDetails = ({ task, showDetails, editTask }) => {
     }
   };
 
+  const deleteTask = async () => {
+    const response = await fetch(url_base + "/tasks/delete/" + task.id, {
+      method: "DELETE",
+    }).catch((error) => {
+      console.log(error);
+      toast.error("Erro ao deletar tarefa");
+    });
+
+    if (response.status === 200) {
+      refresh();
+    }
+  };
+
   return (
     <div
       className={`
@@ -76,6 +89,7 @@ const TaskCardDetails = ({ task, showDetails, editTask }) => {
           </button>
           <button
             title="Excluir"
+            onClick={deleteTask}
             className="flex items-center p-1 gap-x-2 hover:text-gray-400 hover:cursor-pointer"
           >
             <BsTrash3Fill className="w-7 h-7" />

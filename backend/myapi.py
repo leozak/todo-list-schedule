@@ -252,6 +252,28 @@ async def update_task(id: int, task: TaskUpdateSchema):
     finally:
         session.close()
 
+#
+# Deletar uma tarefa
+@app.delete("/tasks/delete/{id}")
+async def delete_task(id: int):
+    """Deleta uma task."""
+    try:
+        session.query(Task).filter(Task.id == id).delete()
+        session.commit()
+        return {
+            "success": True,
+            "message": "Task deleted",
+            "id": id
+        }
+    except Exception as e:
+        session.rollback()
+        return {
+            "success": False,
+            "message": "Error deleting task"
+        }
+    finally:
+        session.close()
+
 
 #
 # Schema para mudar o status de conclusão

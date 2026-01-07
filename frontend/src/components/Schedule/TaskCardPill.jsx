@@ -23,8 +23,8 @@ const TaskCardPill = ({ task, showDetails, setShowDetails }) => {
     });
 
     if (response.status === 200) {
-      refresh();
       setShowDetails(true);
+      refresh();
     }
   };
 
