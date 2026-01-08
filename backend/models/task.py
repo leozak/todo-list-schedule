@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
-from config.database import Base
+from backend.config.database import Base
 
 
 class Task(Base):

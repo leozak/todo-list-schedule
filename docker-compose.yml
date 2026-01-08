@@ -1,6 +1,7 @@
 services:
   # ========== Backend ==========
   backend:
+    container_name: tasks_backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -15,10 +16,11 @@ services:
       - ./backend:/app # Hot reload em desenvolvimento
     depends_on:
       - db
-    command: uvicorn myapi:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
   # ========== Frontend ==========
   frontend:
+    container_name: tasks_frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -34,7 +36,7 @@ services:
   # ========== Banco de Dados ==========
   db:
     image: postgres:15-alpine
-    container_name: postgres_db
+    container_name: tasks_postgres_db
     ports:
       - "5432:5432"
     environment:

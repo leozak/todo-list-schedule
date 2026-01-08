@@ -4,8 +4,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from main import app
-from config.database import Base, get_db
+from backend.main import app
+from backend.config.database import Base, get_db
 
 # Banco de dados em memória para testes
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"

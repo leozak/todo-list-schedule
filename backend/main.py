@@ -5,10 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
-from config.database import Base, engine, get_db
+from backend.config.database import Base, engine, get_db
 
-from models.user import User
-from models.task import Task
+from backend.models.user import User
+from backend.models.task import Task
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
