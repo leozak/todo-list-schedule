@@ -1,11 +1,14 @@
 import os
 import hashlib
-from datetime import datetime
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import Session
 from pydantic import BaseModel
+
+from config.database import Base, engine, get_db
+
+from models.user import User
+from models.task import Task
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
@@ -14,7 +17,7 @@ DATABASE_URL = os.getenv(
 
 ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173")
 
-# origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+Base.metadata.create_all(bind=engine)
 
 # Configura o FastAPI
 app = FastAPI(title="Trask Manager API", version="0.3")
@@ -27,102 +30,26 @@ app.add_middleware(
     allow_headers=["*"],
     )
 
-# SQLAlchemy
-# db = create_engine("sqlite:///tasks.db")
-engine = create_engine(DATABASE_URL)
-Session = sessionmaker(bind=engine)
-session = Session()
-
-Base = declarative_base()
-
-class UserSchema(BaseModel):
-    name: str
-    username: str
-    password: str
-
-class LoginSchema(BaseModel):
-    username: str
-    password: str
-
-# Tabela de usuários
-class User(Base):
-    __tablename__ = "users"
-
-    name = Column("name", String)
-    username = Column("username", String, primary_key=True, unique=True)
-    password = Column("password", String)
-
-    def __init__(self, name, username, password):
-        self.name = name
-        self.username = username
-        self.password = password
-
-
-class TaskSchema(BaseModel):
-    id: int
-    title: str
-    description: str
-    priority: int
-    pin: bool
-    done: bool
-    username: str
-    date: str
-
-# Tabela de to-dos
-class Task(Base):
-    __tablename__ = "task"
-
-    id = Column("id", Integer, primary_key=True, autoincrement=True)
-    title = Column("title", String)
-    description = Column("description", String)
-    priority = Column("priority", Integer)
-    pin = Column("pin", Boolean)
-    done = Column("done", Boolean)
-    username = Column("username", ForeignKey("users.username"))
-    date = Column("date", String)
-
-    def __init__(self, title, description, username, priority=0, date=datetime.isoformat(datetime.now(), timespec="seconds"), pin=False, done=False):
-        self.title = title
-        self.description = description
-        self.priority = priority
-        self.pin = pin
-        self.done = done
-        self.username = username
-        self.date = date
-        
-
-# Cria as tabelas
-Base.metadata.create_all(bind=engine)
-
-#
-# Dependency que retorna a sessão de banco de dados
-def get_db():
-    """
-    Gera uma nova sessão de banco de dados.
-    """
-    db = Session()
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 #
 # DEV: Mostra todos os registros do DB
 @app.get("/")
-async def root(username: str):
-    """Listagem de todas as tasks do usuário."""
-    task = session.query(Task).all()
-    return task
+async def root(username: str, db: Session = Depends(get_db)):
+    """Status da API."""
+    return {"status": "online", "message": "API de Tarefas"}
 
 
 #
 # Login de um usuário
+class LoginSchema(BaseModel):
+    username: str
+    password: str
+
 @app.post("/users/login")
-async def login_user(user: LoginSchema):
+async def login_user(user: LoginSchema, db: Session = Depends(get_db)):
     """Login de um usuário."""
     hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
-    existing_user = session.query(User).filter_by(username=user.username, password=hashed_password).first()
+    existing_user = db.query(User).filter_by(username=user.username, password=hashed_password).first()
     if (existing_user):
         return {
                 "success": True,
@@ -139,11 +66,16 @@ async def login_user(user: LoginSchema):
 
 #
 # Cria um novo usuário
+class UserCreateSchema(BaseModel):
+    name: str
+    username: str
+    password: str
+
 @app.post("/users/create")
-async def create_user(user: UserSchema):
+async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
     """Creates a new user."""
     try:
-        existing_user = session.query(User).filter_by(username=user.username).first()
+        existing_user = db.query(User).filter_by(username=user.username).first()
         if existing_user:
             return {
                 "success": False,
@@ -152,8 +84,8 @@ async def create_user(user: UserSchema):
         else:
             hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
             new_user = User(name=user.name, username=user.username, password=hashed_password)
-            session.add(new_user)
-            session.commit()
+            db.add(new_user)
+            db.commit()
             return {
                 "success": True,
                 "message": "User created",
@@ -161,20 +93,20 @@ async def create_user(user: UserSchema):
                 "username": user.username
             }
     except Exception as e:
-        session.rollback()
+        db.rollback()
         return {
             "success": False,
             "message": "Error creating user"
         }
     finally:
-        session.close()
+        db.close()
 
 #
 # Retorna todas as tasks de um usuário
 @app.get("/tasks/{username}")
-async def get_tasks(username: str):
+async def get_tasks(username: str, db: Session = Depends(get_db)):
     """Listagem de todas as tasks do usuário."""
-    tasks = session.query(Task).filter(Task.username == username).order_by(Task.date).all()
+    tasks = db.query(Task).filter(Task.username == username).order_by(Task.date).all()
 
     if not tasks:
         return {
@@ -200,13 +132,24 @@ async def get_tasks(username: str):
 
 #
 # Cria uma nova task
+class TaskCreateSchema(BaseModel):
+    id: int
+    title: str
+    description: str
+    priority: int
+    pin: bool
+    done: bool
+    username: str
+    date: str
+
 @app.post("/tasks/create")
-async def create_task(task: TaskSchema):
+async def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
     """Cria uma nova task."""
     try:
         new_task = Task(title=task.title, description=task.description, priority=task.priority, pin=task.pin, done=task.done, date=task.date, username=task.username)
-        session.add(new_task)
-        session.commit()
+        # new_task = Task(**task.model_dump())
+        db.add(new_task)
+        db.commit()
         return {
             "success": True,
             "message": "Task created",
@@ -220,13 +163,13 @@ async def create_task(task: TaskSchema):
             "username": new_task.username
         }
     except Exception as e:
-        session.rollback()
+        db.rollback()
         return {
             "success": False,
             "message": "Error creating task"
         }
     finally:
-        session.close()
+        db.close()
 
 
 #
@@ -242,10 +185,10 @@ class TaskUpdateSchema(BaseModel):
 #
 # Altera uma task
 @app.put("/tasks/update/{id}")
-async def update_task(id: int, task: TaskUpdateSchema):
+async def update_task(id: int, task: TaskUpdateSchema, db: Session = Depends(get_db)):
     """Altera uma task."""
     try:
-        session.query(Task).filter(Task.id == id).update({
+        db.query(Task).filter(Task.id == id).update({
             "title": task.title,
             "description": task.description,
             "priority": task.priority,
@@ -253,7 +196,7 @@ async def update_task(id: int, task: TaskUpdateSchema):
             "done": task.done,
             "date": task.date
         })
-        session.commit()
+        db.commit()
         return {
             "success": True,
             "message": "Task updated",
@@ -266,50 +209,48 @@ async def update_task(id: int, task: TaskUpdateSchema):
             "date": task.date
         }
     except Exception as e:
-        session.rollback()
+        db.rollback()
         return {
             "success": False,
             "message": "Error updating task"
         }
     finally:
-        session.close()
+        db.close()
 
 #
 # Deletar uma tarefa
 @app.delete("/tasks/delete/{id}")
-async def delete_task(id: int):
+async def delete_task(id: int, db: Session = Depends(get_db)):
     """Deleta uma task."""
     try:
-        session.query(Task).filter(Task.id == id).delete()
-        session.commit()
+        db.query(Task).filter(Task.id == id).delete()
+        db.commit()
         return {
             "success": True,
             "message": "Task deleted",
             "id": id
         }
     except Exception as e:
-        session.rollback()
+        db.rollback()
         return {
             "success": False,
             "message": "Error deleting task"
         }
     finally:
-        session.close()
+        db.close()
 
 
 #
-# Schema para mudar o status de conclusão
+# Muda o status de conclusão de uma tarefa
 class TaskDoneSchema(BaseModel):
     done: bool
 
-#
-# Muda o status de conclusão
 @app.patch("/tasks/done/{id}")
-async def done_task(id: int, task: TaskDoneSchema):
+async def done_task(id: int, task: TaskDoneSchema, db: Session = Depends(get_db)):
     """Muda o status de conclusão de uma task."""
     try:
-        session.query(Task).filter(Task.id == id).update({"done": task.done})
-        session.commit()
+        db.query(Task).filter(Task.id == id).update({"done": task.done})
+        db.commit()
         return {
             "success": True,
             "message": "Task done updated",
@@ -317,28 +258,26 @@ async def done_task(id: int, task: TaskDoneSchema):
             "done": task.done,
         }
     except Exception as e:
-        session.rollback()
+        db.rollback()
         return {
             "success": False,
             "message": "Error updating done"
         }
     finally:
-        session.close()
+        db.close()
 
-
-#
-# Schema para fixar ou desafixar uma tarefa
-class TaskPinSchema(BaseModel):
-    pin: bool
 
 #
 # Fixa ou desafixa uma tarefa
+class TaskPinSchema(BaseModel):
+    pin: bool
+
 @app.patch("/tasks/pin/{id}")
-async def pin_task(id: int, task: TaskPinSchema):
+async def pin_task(id: int, task: TaskPinSchema, db: Session = Depends(get_db)):
     """Fixa ou desafixa uma tarefa."""
     try:
-        session.query(Task).filter(Task.id == id).update({"pin": task.pin})
-        session.commit()
+        db.query(Task).filter(Task.id == id).update({"pin": task.pin})
+        db.commit()
         return {
             "success": True,
             "message": "Task pin updated",
@@ -346,10 +285,10 @@ async def pin_task(id: int, task: TaskPinSchema):
             "done": task.pin,
         }
     except Exception as e:
-        session.rollback()
+        db.rollback()
         return {
             "success": False,
             "message": "Error updating pin"
         }
     finally:
-        session.close()
+        db.close()

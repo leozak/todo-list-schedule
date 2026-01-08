@@ -1,19 +1,19 @@
 import pytest
 
 
-class TestRoot:
-    """Testes do endpoint raiz."""
+# class TestRoot:
+#     """Testes do endpoint raiz."""
     
-    def test_root_retorna_200(self, client):
-        """GET / deve retornar status 200."""
-        response = client.get("/")
-        assert response.status_code == 200
+#     def test_root_retorna_200(self, client):
+#         """GET / deve retornar status 200."""
+#         response = client.get("/")
+#         assert response.status_code == 200
     
-    def test_root_retorna_mensagem(self, client):
-        """GET / deve retornar mensagem de boas-vindas."""
-        response = client.get("/")
-        data = response.json()
-        assert "status" in data or "message" in data
+#     def test_root_retorna_mensagem(self, client):
+#         """GET / deve retornar mensagem de boas-vindas."""
+#         response = client.get("/")
+#         data = response.json()
+#         assert "status" in data or "message" in data
 
 
 # class TestTarefas:

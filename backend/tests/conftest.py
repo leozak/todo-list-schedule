@@ -1,14 +1,11 @@
-import sys
 import pytest
-from pathlib import Path
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from myapi import app, Base, get_db
+from main import app
+from config.database import Base, get_db
 
 # Banco de dados em memória para testes
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
