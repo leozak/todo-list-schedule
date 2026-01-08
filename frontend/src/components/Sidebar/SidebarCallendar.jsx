@@ -6,21 +6,21 @@ import { DateContext } from "../../context/DateContext";
 import { TasksContext } from "../../context/TasksContext";
 
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
 ];
 
-const week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const week = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 
 const SidebarCallendar = () => {
   const { year, setYear, month, setMonth, day, setDay } =

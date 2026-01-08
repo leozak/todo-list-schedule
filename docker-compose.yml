@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # ========== Backend ==========
   backend:
@@ -11,13 +9,13 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/tarefas
       - SECRET_KEY=chave-secreta-desenvolvimento
-      - CORS_ORIGINS=http://localhost:5173,http://localhost:3000
+      - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
       - ENVIRONMENT=development
     volumes:
-      - ./backend:/app  # Hot reload em desenvolvimento
+      - ./backend:/app # Hot reload em desenvolvimento
     depends_on:
       - db
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uvicorn myapi:app --host 0.0.0.0 --port 8000 --reload
 
   # ========== Frontend ==========
   frontend:
@@ -30,12 +28,13 @@ services:
       - VITE_API_URL=http://localhost:8000
     volumes:
       - ./frontend:/app
-      - /app/node_modules  # Preserva node_modules do container
+      - /app/node_modules # Preserva node_modules do container
     command: npm run dev -- --host
 
   # ========== Banco de Dados ==========
   db:
     image: postgres:15-alpine
+    container_name: postgres_db
     ports:
       - "5432:5432"
     environment:

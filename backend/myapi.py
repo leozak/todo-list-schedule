@@ -1,26 +1,35 @@
+import os
 import hashlib
-from datetime import datetime, timezone
+from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base
 from pydantic import BaseModel
 
-# Configura o FastAPI
-app = FastAPI(title="Trask Manager API", version="0.1")
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://postgres:postgres@db:5432/tarefas",
+)
 
-origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173")
+
+# origins = ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+# Configura o FastAPI
+app = FastAPI(title="Trask Manager API", version="0.3")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     )
 
 # SQLAlchemy
-db = create_engine("sqlite:///tasks.db")
+# db = create_engine("sqlite:///tasks.db")
+db = create_engine(DATABASE_URL)
 Session = sessionmaker(bind=db)
 session = Session()
 
