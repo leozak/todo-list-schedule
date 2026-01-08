@@ -19,6 +19,7 @@
 - **react-icons:** biblioteca de icons.
 - **tailwindcss:** framework de estilização.
 - **class-variance-authority:** gerenciamento de classes de estilização.
+- **react-toastify**: biblioteca de notificação.
 
 ### Backend
 
