@@ -30,11 +30,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Variáveis de ambiente
+.env
+.env.local
+.env.*.local
+.env.production
+backend/.env
+frontend/.env
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
 # Python
 __pycache__/
 *.py[cod]
 *.pyo
-.env
 venv/
 .venv/
 *.egg-info/
@@ -47,4 +57,4 @@ build/
 dist-ssr
 
 # Banco de dados
-tasks.db
+taskmanager.db

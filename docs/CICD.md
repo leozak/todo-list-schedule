@@ -1,6 +1,6 @@
-# Docker
+## Docker
 
-## Subir Toda a Stack
+### Subir Toda a Stack
 
 ```bash
 # Primeira vez (build das imagens)
@@ -13,7 +13,7 @@ docker-compose up
 docker-compose up -d
 ```
 
-## Parar os Containers
+### Parar os Containers
 
 ```bash
 # Parar
@@ -23,7 +23,7 @@ docker-compose down
 docker-compose down -v
 ```
 
-## Comandos Úteis
+### Comandos Úteis
 
 ```bash
 # Ver logs
@@ -40,3 +40,22 @@ docker-compose up --build backend
 # Ver containers rodando
 docker-compose ps
 ```
+
+## Variáveis de Ambiente
+
+### Backend (FastAPI)
+
+| Variável     | Desenvolvimento            | Produção (Render)          | Descrição              |
+| ------------ | -------------------------- | -------------------------- | ---------------------- |
+| DATABASE_URL | sqlite:///./taskmanager.db | postgresql://...           | Conexão com banco      |
+| SECRET_KEY   | (chave aleatória)          | (gerada pelo Render)       | Chave para JWT/sessões |
+| ENVIRONMENT  | development                | production                 | Ambiente atual         |
+| CORS_ORIGINS | http://localhost:5173      | https://seu-app.vercel.app | Origens permitidas     |
+| DEBUG        | True                       | False                      | Modo debug             |
+
+### Frontend (React)
+
+| Variável         | Desenvolvimento       | Produção (Vercel)            | Descrição      |
+| ---------------- | --------------------- | ---------------------------- | -------------- |
+| VITE_API_URL     | http://localhost:8000 | https://sua-api.onrender.com | URL do backend |
+| VITE_ENVIRONMENT | development           | production                   | Ambiente atual |
