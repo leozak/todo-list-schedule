@@ -7,11 +7,6 @@ import SideBar from "./components/Sidebar/Sidebar";
 import DateProvider from "./context/DateContext.jsx";
 import TasksProvider from "./context/TasksContext.jsx";
 
-//
-// Descontinuando
-import api from "./api.js";
-//
-
 function App() {
   //
   // Desacoplando
@@ -35,13 +30,6 @@ function App() {
     }
   }, []);
 
-  //
-  // Descontinuando
-  useEffect(() => {
-    setTodos(api("/todos"));
-  }, []);
-  //
-
   return (
     <>
       <div className="flex h-screen">
@@ -53,7 +41,7 @@ function App() {
             <DateProvider>
               <TasksProvider>
                 <SideBar user={user} />
-                <Schedule todos={todos} setTodos={setTodos} user={user} />
+                <Schedule user={user} />
               </TasksProvider>
             </DateProvider>
           </>

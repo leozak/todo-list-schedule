@@ -39,11 +39,10 @@ const TasksProvider = ({ children }) => {
 
     data = await response.json();
 
-    data = await data.sort((a, b) => {
-      return a.done - b.done || b.pin - a.pin;
-    });
-
     if (response.status === 200) {
+      data = data.sort((a, b) => {
+        return a.done - b.done || b.pin - a.pin;
+      });
       setTasks(data);
     } else {
       console.log(response);

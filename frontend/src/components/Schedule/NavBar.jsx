@@ -14,21 +14,20 @@ import { TasksContext } from "../../context/TasksContext";
 const nowDate = new Date();
 
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
 ];
 
-// const NavBar = ({ month, year, day, setMonth, setYear, setDay }) => {
 const NavBar = () => {
   const { year, setYear, month, setMonth, day, setDay } =
     useContext(DateContext);

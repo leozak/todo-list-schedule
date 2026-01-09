@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 
-import { DateContext } from "../../context/DateContext";
-
 import { TasksContext } from "../../context/TasksContext";
 import TaskCard from "./TaskCard";
 
-const ScheduleView = ({ todos }) => {
-  const { year, month, day } = useContext(DateContext);
+const ScheduleView = () => {
   const { tasks } = useContext(TasksContext);
   const [tasksZero, setTasksZero] = useState([]);
   const [tasksOne, setTasksOne] = useState([]);

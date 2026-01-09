@@ -1,0 +1,50 @@
+services:
+  # ========== Backend ==========
+  backend:
+    container_name: taskmanager_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/taskmanager
+      - SECRET_KEY=developer-key
+      - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+      - ENVIRONMENT=development
+    volumes:
+      - ./backend:/app # Hot reload em desenvolvimento
+    depends_on:
+      - db
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ========== Frontend ==========
+  frontend:
+    container_name: taskmanager_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # Preserva node_modules do container
+    command: npm run dev -- --host
+
+  # ========== Banco de Dados ==========
+  db:
+    image: postgres:15-alpine
+    container_name: taskmanager_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=taskmanager
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

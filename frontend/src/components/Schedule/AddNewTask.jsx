@@ -51,7 +51,7 @@ const AddNewTask = ({ user }) => {
         toast.error("Erro ao criar tarefa.");
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         toast.success("Tarefa criada com sucesso.");
         refresh();
         setOpenForm(false);
