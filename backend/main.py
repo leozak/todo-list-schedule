@@ -12,7 +12,7 @@ from models.task import Task
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://postgres:postgres@db:5432/tarefas",
+    "postgresql://postgres:postgres@db:5432/taskmanager",
 )
 
 ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173")

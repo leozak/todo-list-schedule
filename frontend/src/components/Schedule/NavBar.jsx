@@ -28,7 +28,6 @@ const months = [
   "Dezembro",
 ];
 
-// const NavBar = ({ month, year, day, setMonth, setYear, setDay }) => {
 const NavBar = () => {
   const { year, setYear, month, setMonth, day, setDay } =
     useContext(DateContext);

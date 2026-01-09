@@ -5,7 +5,7 @@ import os
 # URL do banco de dados
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "sqlite:///./tarefas.db", # SQLite para desenvolvimento
+    "sqlite:///./taskmanager.db", # SQLite para desenvolvimento
 )
 
 # Configuração do engine
