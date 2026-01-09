@@ -5,7 +5,7 @@ import { DateContext } from "./DateContext";
 
 export const TasksContext = createContext();
 
-const url_base = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const username = sessionStorage.getItem("username");
 
@@ -27,7 +27,7 @@ const TasksProvider = ({ children }) => {
   //
   // Carrega as tarefas
   const loadingTasks = async () => {
-    const response = await fetch(url_base + "/tasks/" + username, {
+    const response = await fetch(`${API_URL}/tasks/${username}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

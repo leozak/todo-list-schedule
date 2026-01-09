@@ -7,7 +7,7 @@ import TaskEdit from "./TaskEdit";
 
 import { TasksContext } from "../../context/TasksContext";
 
-const url_base = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const AddNewTask = ({ user }) => {
   const [openForm, setOpenForm] = useState(false);
@@ -31,7 +31,7 @@ const AddNewTask = ({ user }) => {
     if (task.title === "") {
       toast.error("Entre com um título.");
     } else {
-      const response = await fetch(url_base + "/tasks/create", {
+      const response = await fetch(`${API_URL}/tasks/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

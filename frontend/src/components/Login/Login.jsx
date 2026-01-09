@@ -4,7 +4,7 @@ import { PiUserCirclePlusFill } from "react-icons/pi";
 import { FaUserEdit } from "react-icons/fa";
 import { ImSpinner6 } from "react-icons/im";
 
-const url_base = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const Login = ({ setIsLoggedIn, setUser }) => {
   const [name, setName] = useState("");
@@ -90,7 +90,7 @@ const Login = ({ setIsLoggedIn, setUser }) => {
     // Send the data to the backend
     if (is_ok) {
       try {
-        const response = await fetch(url_base + "/users/create", {
+        const response = await fetch(`${API_URL}/users/create`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -157,7 +157,7 @@ const Login = ({ setIsLoggedIn, setUser }) => {
     // Send the data to the backend
     if (is_ok) {
       try {
-        const response = await fetch(url_base + "/users/login", {
+        const response = await fetch(`${API_URL}/users/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

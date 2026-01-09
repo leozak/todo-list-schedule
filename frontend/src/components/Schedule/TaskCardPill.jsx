@@ -5,7 +5,7 @@ import { RiUnpinLine, RiPushpinFill } from "react-icons/ri";
 
 import { TasksContext } from "../../context/TasksContext";
 
-const url_base = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const TaskCardPill = ({ task, showDetails, setShowDetails }) => {
   const [pin, setPin] = useState(task.pin);
@@ -14,7 +14,7 @@ const TaskCardPill = ({ task, showDetails, setShowDetails }) => {
 
   const handlePinChange = async () => {
     setPin(!pin);
-    const response = await fetch(url_base + "/tasks/pin/" + task.id, {
+    const response = await fetch(`${API_URL}/tasks/pin/${task.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

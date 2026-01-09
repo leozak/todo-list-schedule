@@ -6,7 +6,7 @@ import TaskEdit from "./TaskEdit";
 
 import { TasksContext } from "../../context/TasksContext";
 
-import URL_BASE from "../../utils/urls";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const TaskUpdate = ({ task, closeEditTask }) => {
   const [_task, _setTask] = useState(task);
@@ -17,7 +17,7 @@ const TaskUpdate = ({ task, closeEditTask }) => {
     if (_task.title === "") {
       toast.error("Entre com um título.");
     } else {
-      const response = await fetch(URL_BASE + "/tasks/update/" + _task.id, {
+      const response = await fetch(`${API_URL}/tasks/update/${_task.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -7,7 +7,7 @@ import { BsTrash3Fill } from "react-icons/bs";
 
 import { TasksContext } from "../../context/TasksContext";
 
-const url_base = "http://127.0.0.1:8000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
 const TaskCardDetails = ({ task, showDetails, editTask }) => {
   const [done, setDone] = useState(task.done);
@@ -16,7 +16,7 @@ const TaskCardDetails = ({ task, showDetails, editTask }) => {
 
   const handleDoneChange = async () => {
     setDone(!done);
-    const response = await fetch(url_base + "/tasks/done/" + task.id, {
+    const response = await fetch(`${API_URL}/tasks/done/${task.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +30,7 @@ const TaskCardDetails = ({ task, showDetails, editTask }) => {
   };
 
   const deleteTask = async () => {
-    const response = await fetch(url_base + "/tasks/delete/" + task.id, {
+    const response = await fetch(`${API_URL}/tasks/delete/${task.id}`, {
       method: "DELETE",
     }).catch((error) => {
       console.log(error);
