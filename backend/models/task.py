@@ -12,14 +12,14 @@ class Task(Base):
     priority = Column("priority", Integer)
     pin = Column("pin", Boolean)
     done = Column("done", Boolean)
-    username = Column("username", ForeignKey("users.username"))
+    email = Column("email", ForeignKey("user.email"))
     date = Column("date", String)
 
-    def __init__(self, title, description, username, priority=0, date=datetime.isoformat(datetime.now(), timespec="seconds"), pin=False, done=False):
+    def __init__(self, title, description, email, priority=0, date=datetime.isoformat(datetime.now(), timespec="seconds"), pin=False, done=False):
         self.title = title
         self.description = description
         self.priority = priority
         self.pin = pin
         self.done = done
-        self.username = username
+        self.email = email
         self.date = date

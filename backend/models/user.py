@@ -3,13 +3,13 @@ from sqlalchemy import Column, String
 from config.database import Base
 
 class User(Base):
-    __tablename__ = "users"
+    __tablename__ = "user"
 
+    email = Column("email", String, primary_key=True, unique=True)
     name = Column("name", String)
-    username = Column("username", String, primary_key=True, unique=True)
     password = Column("password", String)
 
-    def __init__(self, name, username, password):
+    def __init__(self, name, email, password):
+        self.email = email
         self.name = name
-        self.username = username
         self.password = password

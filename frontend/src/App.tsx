@@ -1,6 +1,7 @@
 import Login from "./features/Auth/Login";
 
 import { useTheme } from "./contexts/ThemeContext";
+import ServerGuard from "./components/ServerGuard/ServerGuard";
 
 function App() {
   const { theme, toggleTheme } = useTheme();
@@ -12,7 +13,9 @@ function App() {
           ${theme === "dark" ? "dark" : ""}
         `}
       >
-        <Login />
+        <ServerGuard>
+          <Login />
+        </ServerGuard>
       </div>
     </>
   );

@@ -1,7 +1,11 @@
-import { PiUserCirclePlusFill } from "react-icons/pi";
-import Theme from "../../components/Theme/Theme";
-import Responsividade from "../../devutils/Responsividade";
 import { useState } from "react";
+import axios from "axios";
+
+import { PiUserCirclePlusFill } from "react-icons/pi";
+
+import Theme from "../../components/Theme/Theme";
+
+import { API_URL } from "../../services/config";
 
 type Props = {
   setNewUser: React.Dispatch<React.SetStateAction<boolean>>;
@@ -108,9 +112,22 @@ const Sigup = ({ setNewUser }: Props) => {
     return true;
   };
 
-  const handleNewUser = async () => {
+  const handleNewUser = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (formValidate()) {
       console.log(name, email, password, repassword);
+      try {
+        const response = await axios.post(`${API_URL}/users/create`, {
+          name,
+          email,
+          password,
+        });
+        if (response.status === 201) {
+          setNewUser(false);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -135,85 +152,87 @@ const Sigup = ({ setNewUser }: Props) => {
           Por favor, insira seus dados para criar uma nova conta.
         </p>
         {/* Login form */}
-        <div className="py-2 px-4">
-          <input
-            id="name"
-            type="text"
-            value={name}
-            onChange={handleNameChange}
-            className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
-            placeholder="Nome"
-          />
-          {errorName.error && (
-            <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
-              {errorName.message}
-            </p>
-          )}
-        </div>
-        <div className="py-2 px-4">
-          <input
-            id="email"
-            type="text"
-            value={email}
-            onChange={handleEmailChange}
-            className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
-            placeholder="E-mail"
-          />
-          {errorEmail.error && (
-            <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
-              {errorEmail.message}
-            </p>
-          )}
-        </div>
-        <div className="py-2 px-4">
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
-            placeholder="Senha"
-          />
-          {errorPassword.error && (
-            <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
-              {errorPassword.message}
-            </p>
-          )}
-        </div>
-        <div className="py-2 px-4">
-          <input
-            id="repassword"
-            type="password"
-            value={repassword}
-            onChange={handleRepasswordChange}
-            className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
-            placeholder="Confirmar senha"
-          />
-          {errorRepassword.error && (
-            <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
-              {errorRepassword.message}
-            </p>
-          )}
-        </div>
-        <div className="flex justify-center mx-4 mt-2 mb-2">
-          <button
-            onClick={handleNewUser}
-            className="bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-500/80 dark:bg-zinc-700 hover:dark:bg-zinc-600 active:dark:bg-zinc-600/80 text-zinc-100 dark:text-zinc-300 text-sm font-semibold py-1 px-8 rounded-lg hover:cursor-pointer"
-          >
-            Cadastrar
-          </button>
-        </div>
-        <div className="text-xs text-center m-2 mt-4">
-          Ja possui uma conta? &nbsp;
-          <button
-            onClick={() => {
-              setNewUser(false);
-            }}
-            className="text-cyan-800 hover:underline hover:text-cyan-600 hover:cursor-pointer"
-          >
-            Entrar
-          </button>
-        </div>
+        <form>
+          <div className="py-2 px-4">
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={handleNameChange}
+              className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
+              placeholder="Nome"
+            />
+            {errorName.error && (
+              <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
+                {errorName.message}
+              </p>
+            )}
+          </div>
+          <div className="py-2 px-4">
+            <input
+              id="email"
+              type="text"
+              value={email}
+              onChange={handleEmailChange}
+              className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
+              placeholder="E-mail"
+            />
+            {errorEmail.error && (
+              <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
+                {errorEmail.message}
+              </p>
+            )}
+          </div>
+          <div className="py-2 px-4">
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
+              placeholder="Senha"
+            />
+            {errorPassword.error && (
+              <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
+                {errorPassword.message}
+              </p>
+            )}
+          </div>
+          <div className="py-2 px-4">
+            <input
+              id="repassword"
+              type="password"
+              value={repassword}
+              onChange={handleRepasswordChange}
+              className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
+              placeholder="Confirmar senha"
+            />
+            {errorRepassword.error && (
+              <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
+                {errorRepassword.message}
+              </p>
+            )}
+          </div>
+          <div className="flex justify-center mx-4 mt-2 mb-2">
+            <button
+              onClick={handleNewUser}
+              className="bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-500/80 dark:bg-zinc-700 hover:dark:bg-zinc-600 active:dark:bg-zinc-600/80 text-zinc-100 dark:text-zinc-300 text-sm font-semibold py-1 px-8 rounded-lg hover:cursor-pointer"
+            >
+              Cadastrar
+            </button>
+          </div>
+          <div className="text-xs text-center m-2 mt-4">
+            Ja possui uma conta? &nbsp;
+            <button
+              onClick={() => {
+                setNewUser(false);
+              }}
+              className="text-cyan-800 hover:underline hover:text-cyan-600 hover:cursor-pointer"
+            >
+              Entrar
+            </button>
+          </div>
+        </form>
         <div className="bg-zinc-600 dark:bg-zinc-700 h-5"></div>
       </div>
 

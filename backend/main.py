@@ -37,26 +37,26 @@ app.add_middleware(
 @app.get("/")
 async def root(db: Session = Depends(get_db)):
     """Status da API."""
-    return {"status": "online", "message": "API de Tarefas"}
+    return {"status": "online", "message": "Task Manager API is running."}
 
 
 #
 # Login de um usuário
 class LoginSchema(BaseModel):
-    username: str
+    email: str
     password: str
 
 @app.post("/users/login")
 async def login_user(user: LoginSchema, db: Session = Depends(get_db)):
     """Login de um usuário."""
     hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
-    existing_user = db.query(User).filter_by(username=user.username, password=hashed_password).first()
+    existing_user = db.query(User).filter_by(email=user.email, password=hashed_password).first()
     if (existing_user):
         return {
                 "success": True,
                 "message": "User logged in",
                 "name": existing_user.name,
-                "username": existing_user.username
+                "email": existing_user.email
             }
     else:
         return {
@@ -69,14 +69,14 @@ async def login_user(user: LoginSchema, db: Session = Depends(get_db)):
 # Cria um novo usuário
 class UserCreateSchema(BaseModel):
     name: str
-    username: str
+    email: str
     password: str
 
 @app.post("/users/create", status_code=201)
 async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
     """Creates a new user."""
     try:
-        existing_user = db.query(User).filter_by(username=user.username).first()
+        existing_user = db.query(User).filter_by(email=user.email).first()
         if existing_user:
             return {
                 "success": False,
@@ -84,11 +84,11 @@ async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
             }
         else:
             hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
-            new_user = User(name=  user.name, username=user.username, password=hashed_password)
+            new_user = User(name=user.name, email=user.email, password=hashed_password)
             
-            add_first_task = Task(title="Resolva o que é crítico agora", description="A prioridade Urgente deve ser usada para tarefas que exigem atenção imediata, como prazos que vencem hoje ou problemas que impedem seu progresso. Se não pode esperar, é urgente.", priority=0, pin=True, done=False, username=user.username, date="2026-01-09")
-            add_secound_task = Task(title="Organize suas metas principais", description="A prioridade Importante é para atividades que trazem valor real ao seu projeto. Use para tarefas que têm prazo definido, mas não são emergências. A maior parte do seu trabalho deve estar aqui.", priority=1, pin=True, done=False, username=user.username, date="2026-01-09")
-            add_tird_task = Task(title="Ideias para quando sobrar tempo", description="A prioridade Opcional serve para ideias, melhorias desejáveis (nice-to-have) ou tarefas sem prazo. São coisas que você gostaria de fazer, mas não afetarão seu projeto se ficarem para depois.", priority=2, pin=True, done=False, username=user.username, date="2026-01-09")
+            add_first_task = Task(title="Resolva o que é crítico agora", description="A prioridade Urgente deve ser usada para tarefas que exigem atenção imediata, como prazos que vencem hoje ou problemas que impedem seu progresso. Se não pode esperar, é urgente.", priority=0, pin=True, done=False, email=user.email, date="2026-01-09")
+            add_secound_task = Task(title="Organize suas metas principais", description="A prioridade Importante é para atividades que trazem valor real ao seu projeto. Use para tarefas que têm prazo definido, mas não são emergências. A maior parte do seu trabalho deve estar aqui.", priority=1, pin=True, done=False, email=user.email, date="2026-01-09")
+            add_tird_task = Task(title="Ideias para quando sobrar tempo", description="A prioridade Opcional serve para ideias, melhorias desejáveis (nice-to-have) ou tarefas sem prazo. São coisas que você gostaria de fazer, mas não afetarão seu projeto se ficarem para depois.", priority=2, pin=True, done=False, email=user.email, date="2026-01-09")
 
             db.add(new_user)
             db.commit()
@@ -102,7 +102,7 @@ async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
                 "success": True,
                 "message": "User created",
                 "name": user.name,
-                "username": user.username
+                "email": user.email
             }
     except Exception as e:
         db.rollback()

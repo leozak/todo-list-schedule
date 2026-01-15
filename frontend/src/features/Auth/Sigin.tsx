@@ -68,7 +68,8 @@ const Sigup = ({ setNewUser }: Props) => {
     return true;
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (formValidate()) {
       console.log(email, password);
     }
@@ -95,44 +96,46 @@ const Sigup = ({ setNewUser }: Props) => {
           Por favor, insira seu e-mail e senha para entrar.
         </p>
         {/* Login form */}
-        <div className="py-2 px-4">
-          <input
-            id="email"
-            type="text"
-            value={email}
-            onChange={handleEmailChange}
-            className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
-            placeholder="E-mail"
-          />
-          {errorEmail.error && (
-            <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
-              {errorEmail.message}
-            </p>
-          )}
-        </div>
-        <div className="py-2 px-4">
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={handlePasswordChange}
-            className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
-            placeholder="Senha"
-          />
-          {errorPassword.error && (
-            <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
-              {errorPassword.message}
-            </p>
-          )}
-        </div>
-        <div className="flex justify-center mx-4 mt-2 mb-2">
-          <button
-            onClick={handleLogin}
-            className="bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-500/80 dark:bg-zinc-700 hover:dark:bg-zinc-600 active:dark:bg-zinc-600/80 text-zinc-100 dark:text-zinc-300 text-sm font-semibold py-1 px-8 rounded-lg hover:cursor-pointer"
-          >
-            Cadastrar
-          </button>
-        </div>
+        <form>
+          <div className="py-2 px-4">
+            <input
+              id="email"
+              type="text"
+              value={email}
+              onChange={handleEmailChange}
+              className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
+              placeholder="E-mail"
+            />
+            {errorEmail.error && (
+              <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
+                {errorEmail.message}
+              </p>
+            )}
+          </div>
+          <div className="py-2 px-4">
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              className="bg-zinc-100/60 dark:bg-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-sm font-semibold w-full p-1 px-2 rounded-lg focus:outline-none"
+              placeholder="Senha"
+            />
+            {errorPassword.error && (
+              <p className="text-red-400/80 dark:text-red-400/60 text-xs mt-1 -mb-2 pl-2">
+                {errorPassword.message}
+              </p>
+            )}
+          </div>
+          <div className="flex justify-center mx-4 mt-2 mb-2">
+            <button
+              onClick={handleLogin}
+              className="bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-500/80 dark:bg-zinc-700 hover:dark:bg-zinc-600 active:dark:bg-zinc-600/80 text-zinc-100 dark:text-zinc-300 text-sm font-semibold py-1 px-8 rounded-lg hover:cursor-pointer"
+            >
+              Cadastrar
+            </button>
+          </div>
+        </form>
         <div className="text-xs text-center m-2 mt-4">
           Novo por aqui? &nbsp;
           <button
