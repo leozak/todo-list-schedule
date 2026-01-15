@@ -80,7 +80,9 @@ async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
         if existing_user:
             return {
                 "success": False,
-                "message": "User already exists"
+                "message": "User already exists",
+                "name": existing_user.name,
+                "email": existing_user.email
             }
         else:
             hashed_password = hashlib.sha256(user.password.encode()).hexdigest()

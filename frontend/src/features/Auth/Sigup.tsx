@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 import { PiUserCirclePlusFill } from "react-icons/pi";
@@ -6,6 +7,9 @@ import { PiUserCirclePlusFill } from "react-icons/pi";
 import Theme from "../../components/Theme/Theme";
 
 import { API_URL } from "../../services/config";
+
+import { api } from "../../services/api";
+import { useUserMutate } from "../../hooks/useUserMutate";
 
 type Props = {
   setNewUser: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,6 +42,8 @@ const Sigup = ({ setNewUser }: Props) => {
     error: false,
     message: "",
   });
+
+  const { data, mutate, isSuccess, isError, isPending } = useUserMutate();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -112,24 +118,43 @@ const Sigup = ({ setNewUser }: Props) => {
     return true;
   };
 
-  const handleNewUser = async (event: React.FormEvent) => {
+  const handleNewUser = (event: React.FormEvent) => {
     event.preventDefault();
     if (formValidate()) {
-      console.log(name, email, password, repassword);
-      try {
-        const response = await axios.post(`${API_URL}/users/create`, {
-          name,
-          email,
-          password,
-        });
-        if (response.status === 201) {
-          setNewUser(false);
-        }
-      } catch (err) {
-        console.log(err);
-      }
+      mutate({ name, email, password });
     }
   };
+
+  useEffect(() => {
+    console.log(data);
+    if (data?.sussess) {
+      setErrorEmail({ error: false, message: "" });
+      setNewUser(false);
+    } else if (data?.message === "User already exists") {
+      setErrorEmail({ error: true, message: "Email ja cadastrado." });
+    }
+  }, [isSuccess]);
+
+  // const handleNewUser = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   if (formValidate()) {
+  //     await axios
+  //       .post(`${API_URL}/users/create`, {
+  //         name,
+  //         email,
+  //         password,
+  //       })
+  //       .then((response) => {
+  //         if (response.data.sussess) {
+  //           setErrorEmail({ error: false, message: "" });
+  //           setNewUser(false);
+  //         } else if (response.data.message === "User already exists") {
+  //           setErrorEmail({ error: true, message: "Email ja cadastrado." });
+  //         }
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // };
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
@@ -218,7 +243,8 @@ const Sigup = ({ setNewUser }: Props) => {
               onClick={handleNewUser}
               className="bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-500/80 dark:bg-zinc-700 hover:dark:bg-zinc-600 active:dark:bg-zinc-600/80 text-zinc-100 dark:text-zinc-300 text-sm font-semibold py-1 px-8 rounded-lg hover:cursor-pointer"
             >
-              Cadastrar
+              {isPending ? "Enviando..." : "Cadastrar"}
+              {/* Cadastrar */}
             </button>
           </div>
           <div className="text-xs text-center m-2 mt-4">
