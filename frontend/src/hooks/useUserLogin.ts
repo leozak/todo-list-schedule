@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import axios, { type AxiosError } from "axios";
 
-import type { AuthResponse, LoginCredentials } from "../interfaces/User";
+import type { AuthResponse, LoginCredentials } from "../interfaces/user";
 
 import { API_URL } from "../services/config";
 
@@ -17,7 +17,7 @@ const loginRequest = async (user: LoginCredentials): Promise<AuthResponse> => {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-    }
+    },
   );
 
   console.log(data);
@@ -27,18 +27,15 @@ const loginRequest = async (user: LoginCredentials): Promise<AuthResponse> => {
 
 export const useAuthLogin = () => {
   return useMutation<AuthResponse, AxiosError, LoginCredentials>({
+    mutationKey: ["login"],
     mutationFn: loginRequest,
-
     onSuccess: (data) => {
-      console.log(data);
-
-      localStorage.setItem("email", JSON.stringify(data.email));
-      localStorage.setItem("name", JSON.stringify(data.name));
-      localStorage.setItem("access_token", JSON.stringify(data.access_token));
-      localStorage.setItem("refresh_token", JSON.stringify(data.refresh_token));
-      console.log("Login efetuado com sucesso");
+      localStorage.setItem("email", data.email as string);
+      localStorage.setItem("name", data.name as string);
+      localStorage.setItem("access_token", data.access_token as string);
+      localStorage.setItem("refresh_token", data.refresh_token as string);
+      window.location.href = "/";
     },
-
     onError: (error) => {
       console.error("Erro ao fazer login:", error);
     },

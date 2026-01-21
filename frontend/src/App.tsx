@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import { useTheme } from "./contexts/ThemeContext";
 
@@ -7,6 +7,11 @@ import ServerGuard from "./components/ServerGuard/ServerGuard";
 import { api } from "./services/api";
 
 import Login from "./features/Auth/Login";
+
+import DateProvider from "./contexts/DateContext";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Responsividade from "./devutils/Responsividade";
+import TaskManager from "./components/TaskManager/TaskManager";
 
 function App() {
   const { theme } = useTheme();
@@ -18,16 +23,16 @@ function App() {
     if (access_token) {
       const verifyToken = async () => {
         try {
-          const data = await api.get("/users/verify-token");
+          const data = await api.get("/verify-token");
           return data;
         } catch (error) {
           console.log("error:", error);
-          localStorage.removeItem("access_token");
-          // localStorage.removeItem("refresh_token");
         }
       };
-      console.log("verifyToken:", verifyToken());
-      setIsLogged(true);
+
+      verifyToken().then(() => {
+        setIsLogged(true);
+      });
     }
   });
 
@@ -35,7 +40,8 @@ function App() {
     <>
       <div
         className={`
-          bg-white dark:bg-zinc-900
+          bg-white
+          dark:bg-zinc-900 dark:text-zinc-300
           ${theme === "dark" ? "dark" : ""}
         `}
       >
@@ -43,7 +49,12 @@ function App() {
           {!isLogged ? (
             <Login />
           ) : (
-            <h1 className="font-bold text-2xl">Bem vindo</h1>
+            <DateProvider>
+              <div className="flex h-screen dark:bg-zinc-800">
+                <Sidebar />
+                <TaskManager />
+              </div>
+            </DateProvider>
           )}
         </ServerGuard>
       </div>

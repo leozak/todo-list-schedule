@@ -5,13 +5,15 @@ export interface NewUserData {
 }
 
 export interface NewUserResponseData {
-  sussess: boolean;
+  success: boolean;
   message: string;
   name: string;
   email: string;
 }
 
 export interface NewUserResponse {
+  success?: boolean;
+  message?: string;
   data: NewUserResponseData;
 }
 
@@ -21,7 +23,7 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
-  sussess: boolean;
+  success: boolean;
   message: string;
   name?: string;
   email?: string;

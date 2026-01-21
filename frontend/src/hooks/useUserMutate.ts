@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import type { AxiosPromise } from "axios";
 
-import type { NewUserData, NewUserResponse } from "../interfaces/User";
+import type { NewUserData, NewUserResponse } from "../interfaces/user";
 
 import { api } from "../services/api";
 
 const submitNewUser = async (
-  user: NewUserData
+  user: NewUserData,
 ): AxiosPromise<NewUserResponse> => {
   const response = await api.post<NewUserResponse>("/users/create", user);
   return response;

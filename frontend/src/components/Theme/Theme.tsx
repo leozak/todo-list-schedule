@@ -14,7 +14,7 @@ const Theme = () => {
                   dark:text-white dark:bg-zinc-100/10 dark:hover:bg-zinc-100/10
                 "
       >
-        <MdOutlineDarkMode className="w-7 h-7" />
+        <MdOutlineDarkMode className="w-5 h-5" />
       </button>
       <button
         onClick={() => toggleTheme("light")}
@@ -24,7 +24,7 @@ const Theme = () => {
                   dark:text-white dark:bg-transparent dark:hover:bg-zinc-100/10
                 "
       >
-        <MdOutlineLightMode className="w-7 h-7" />
+        <MdOutlineLightMode className="w-5 h-5" />
       </button>
     </div>
   );

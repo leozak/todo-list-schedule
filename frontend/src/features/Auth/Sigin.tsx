@@ -1,6 +1,6 @@
 import { PiUserCircleFill } from "react-icons/pi";
 import Theme from "../../components/Theme/Theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useAuthLogin } from "../../hooks/useUserLogin";
 
@@ -17,6 +17,11 @@ const Sigup = ({ setNewUser }: Props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const [errorLogin, setErrorLogin] = useState<Error>({
+    error: false,
+    message: "",
+  });
+
   const [errorEmail, setErrorEmail] = useState<Error>({
     error: false,
     message: "",
@@ -26,7 +31,7 @@ const Sigup = ({ setNewUser }: Props) => {
     message: "",
   });
 
-  const { mutate, isLoading, isError, isSuccess, error } = useAuthLogin();
+  const { mutate, isPending, isError } = useAuthLogin();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -75,9 +80,20 @@ const Sigup = ({ setNewUser }: Props) => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!formValidate()) return;
-    const response = mutate({ username: email, password: password });
-    console.log(response);
+    mutate({ username: email, password: password });
   };
+
+  useEffect(() => {
+    const storegedEmail = localStorage.getItem("email") || "";
+    if (storegedEmail != "") {
+      setEmail(storegedEmail);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isError)
+      setErrorLogin({ error: true, message: "Email ou senha incorretos." });
+  }, [isError]);
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
@@ -99,6 +115,11 @@ const Sigup = ({ setNewUser }: Props) => {
         <p className="text-zinc-600 text-sm dark:text-zinc-400 text-center m-1 px-4 mb-3">
           Por favor, insira seu e-mail e senha para entrar.
         </p>
+        {errorLogin.error && (
+          <p className="text-red-400/80 dark:text-red-400/60 text-xs text-center">
+            {errorLogin.message}
+          </p>
+        )}
         {/* Login form */}
         <form>
           <div className="py-2 px-4">
@@ -136,7 +157,7 @@ const Sigup = ({ setNewUser }: Props) => {
               onClick={handleLogin}
               className="bg-zinc-600 hover:bg-zinc-500 active:bg-zinc-500/80 dark:bg-zinc-700 hover:dark:bg-zinc-600 active:dark:bg-zinc-600/80 text-zinc-100 dark:text-zinc-300 text-sm font-semibold py-1 px-8 rounded-lg hover:cursor-pointer"
             >
-              Cadastrar
+              {isPending ? "Entrando..." : "Entrar"}
             </button>
           </div>
         </form>

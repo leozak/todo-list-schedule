@@ -9,23 +9,19 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const access_token = localStorage.getItem("access_token");
-  if (access_token) {
-    config.headers.Authorization = `Bearer ${access_token}`;
-  }
-  console.log("REQUEST (config):", config);
+  config.headers["Content-Type"] = "application/json";
+  config.headers["Authorization"] = access_token
+    ? `Bearer ${access_token}`
+    : "";
   return config;
 });
 
 api.interceptors.response.use(
   (response) => {
-    console.log("SUCCESS (response):", response);
     return response;
   },
   async (error) => {
     const originalRequest = error.config;
-    // console.log("ERROR (response):", error);
-    console.log("ERROR (error.response.status)", error.response.status === 401);
-    console.log("ERROR (!originalRequest._retry)", !originalRequest._retry);
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -37,12 +33,13 @@ api.interceptors.response.use(
             Authorization: `Bearer ${refreshToken}`,
           },
         });
-        console.log("REFRESH (data):", data);
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("refresh_token", data.refresh_token);
         return api(originalRequest);
       } catch (err) {
-        console.log("REFRESH (err):", err);
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        window.location.href = "/";
       }
     }
     Promise.reject(error);
