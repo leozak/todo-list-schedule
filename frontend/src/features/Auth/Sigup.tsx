@@ -38,7 +38,7 @@ const Sigup = ({ setNewUser }: Props) => {
     message: "",
   });
 
-  const { data, mutate, isPending } = useUserMutate();
+  const { data, mutate, isPending, isSuccess } = useUserMutate();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -121,35 +121,14 @@ const Sigup = ({ setNewUser }: Props) => {
   };
 
   useEffect(() => {
-    if (data?.success) {
+    if (isSuccess && data?.success) {
       setErrorEmail({ error: false, message: "" });
       localStorage.setItem("email", email);
       setNewUser(false);
-    } else if (!data?.success && data?.message === "User already exists") {
+    } else if (data?.message === "User already exists") {
       setErrorEmail({ error: true, message: "Email ja cadastrado." });
     }
-  }, [isPending]);
-
-  // const handleNewUser = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-  //   if (formValidate()) {
-  //     await axios
-  //       .post(`${API_URL}/users/create`, {
-  //         name,
-  //         email,
-  //         password,
-  //       })
-  //       .then((response) => {
-  //         if (response.data.sussess) {
-  //           setErrorEmail({ error: false, message: "" });
-  //           setNewUser(false);
-  //         } else if (response.data.message === "User already exists") {
-  //           setErrorEmail({ error: true, message: "Email ja cadastrado." });
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // };
+  }, [data]);
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
