@@ -38,7 +38,7 @@ const Sigup = ({ setNewUser }: Props) => {
     message: "",
   });
 
-  const { data, mutate, isSuccess, isPending } = useUserMutate();
+  const { data, mutate, isPending } = useUserMutate();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
