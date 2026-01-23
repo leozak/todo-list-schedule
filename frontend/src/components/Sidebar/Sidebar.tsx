@@ -5,7 +5,6 @@ import {
   TbLayoutSidebarLeftCollapseFilled,
   TbLayoutSidebarLeftExpandFilled,
 } from "react-icons/tb";
-import { FaPowerOff } from "react-icons/fa";
 import SidebarSignout from "./SidebarSignout";
 import SidebarUser from "./SidebarUser";
 

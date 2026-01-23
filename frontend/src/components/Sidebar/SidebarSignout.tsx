@@ -1,5 +1,4 @@
 import { FaPowerOff } from "react-icons/fa";
-import { PiPowerBold } from "react-icons/pi";
 
 const SidebarSignout = () => {
   return (

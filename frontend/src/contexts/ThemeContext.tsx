@@ -2,12 +2,12 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 
 export interface ThemeContextType {
   theme: string;
-  toggleTheme: () => void;
+  toggleTheme: (theme?: "light" | "dark") => void;
 }
 
 // Create the context
 export const ThemeContext = createContext<ThemeContextType | undefined>(
-  undefined
+  undefined,
 );
 
 let storedTheme: string | null = localStorage.getItem("theme");
@@ -18,7 +18,7 @@ if (storedTheme === null) {
 // Create the provider component
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<"light" | "dark">(
-    storedTheme as "dark" | "light"
+    storedTheme as "dark" | "light",
   );
 
   const toggleTheme = (theme?: "light" | "dark") => {
@@ -27,7 +27,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("theme", theme);
     } else {
       setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-      localStorage.setItem("theme", theme === "light" ? "dark" : "light");
+      localStorage.setItem("theme", theme as unknown as string);
     }
   };
 

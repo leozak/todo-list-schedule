@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 
 import { useTheme } from "./contexts/ThemeContext";
 
@@ -10,7 +10,6 @@ import Login from "./features/Auth/Login";
 
 import DateProvider from "./contexts/DateContext";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Responsividade from "./devutils/Responsividade";
 import TaskManager from "./components/TaskManager/TaskManager";
 
 function App() {

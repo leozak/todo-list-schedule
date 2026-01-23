@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-export const DateContext = createContext();
+export const DateContext = createContext({});
 
 const nowDate = new Date();
 
