@@ -38,7 +38,7 @@ const Sigup = ({ setNewUser }: Props) => {
     message: "",
   });
 
-  const { data, mutate, isPending, isSuccess } = useUserMutate();
+  const { data, mutate, isPending } = useUserMutate();
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -121,7 +121,7 @@ const Sigup = ({ setNewUser }: Props) => {
   };
 
   useEffect(() => {
-    if (isSuccess && data?.success) {
+    if (data?.success) {
       setErrorEmail({ error: false, message: "" });
       localStorage.setItem("email", email);
       setNewUser(false);
