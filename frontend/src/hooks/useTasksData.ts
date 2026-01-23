@@ -1,5 +1,5 @@
 const useTasksData = () => {
-  return <div>useTasksData</div>;
+  return "useTasksData";
 };
 
 export default useTasksData;
