@@ -207,6 +207,37 @@ async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
     finally:
         db.close()
 
+
+#
+# Atualização das informações de um usuário
+class UserUpdateSchema(BaseModel):
+    name: str = None
+    email: str
+    password: str = None
+
+@app.post("/users/update")
+async def update_user(user: UserUpdateSchema, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    """Atualiza as informações de um usuário."""
+    user_data = verify_token(token, db)
+    if not user_data:
+        raise HTTPException(status_code=401, detail={"success": False, "message": "User not authenticated."})
+    existing_user = db.query(User).filter_by(email=user_data["email"]).first()
+    if existing_user:
+        if user.password:
+            hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
+            existing_user.password = hashed_password
+        if user.name:
+            existing_user.name = user.name
+        db.commit()
+        return {
+            "success": True,
+            "message": "User updated",
+            "name": existing_user.name,
+            "email": existing_user.email
+        }
+
+
+
 #
 # Retorna todas as tasks de um usuário
 @app.get("/tasks/{username}")

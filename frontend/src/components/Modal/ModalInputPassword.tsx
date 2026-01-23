@@ -12,7 +12,7 @@ const ModalInputPassword = ({
   ...rest
 }: ModalInputPasswordProps) => {
   return (
-    <div className="mb-2">
+    <div className="mb-1">
       {title && (
         <label
           htmlFor={rest.id}
@@ -25,11 +25,15 @@ const ModalInputPassword = ({
         {...rest}
         type="password"
         className={twMerge(
-          "w-full rounded-md bg-zinc-300 focus:bg-zinc-400/60 dark:bg-zinc-800 dark:focus:bg-zinc-900/80 dark:text-zinc-100 py-1 px-2 text-xs sm:text-sm leading-tight focus:shadow-outline focus:outline-none",
+          "w-full rounded-md bg-zinc-300 focus:bg-zinc-300/80 dark:bg-zinc-800 dark:focus:bg-zinc-900/80 dark:text-zinc-100 py-1 px-2 text-xs sm:text-sm leading-tight focus:shadow-outline focus:outline-none",
           rest.className,
         )}
       />
-      {error && <p className="text-red-500 text-xs ml-2">{error}</p>}
+      {error && (
+        <p className="text-red-600/70 dark:text-red-400/70 text-xs ml-2 mt-1">
+          {error}
+        </p>
+      )}
     </div>
   );
 };

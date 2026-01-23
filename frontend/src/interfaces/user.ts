@@ -17,6 +17,18 @@ export interface NewUserResponse {
   data: NewUserResponseData;
 }
 
+export interface UpdateUserInterface {
+  name: string;
+  email: string;
+  password?: string;
+}
+
+export interface UpdateUserResponseData {
+  success: boolean;
+  message: string;
+  name: string;
+}
+
 export interface LoginCredentials {
   username: string;
   password: string;

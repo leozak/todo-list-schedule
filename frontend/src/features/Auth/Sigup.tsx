@@ -4,7 +4,7 @@ import { PiUserCirclePlusFill } from "react-icons/pi";
 
 import Theme from "../../components/Theme/Theme";
 
-import { useUserMutate } from "../../hooks/useUserMutate";
+import { useUserMutate } from "../../hooks/useUserNew";
 
 type Props = {
   setNewUser: React.Dispatch<React.SetStateAction<boolean>>;
