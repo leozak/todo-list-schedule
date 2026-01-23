@@ -121,15 +121,14 @@ const Sigup = ({ setNewUser }: Props) => {
   };
 
   useEffect(() => {
-    console.log(data);
     if (data?.success) {
       setErrorEmail({ error: false, message: "" });
       localStorage.setItem("email", email);
       setNewUser(false);
-    } else if (data?.message === "User already exists") {
+    } else if (!data?.success && data?.message === "User already exists") {
       setErrorEmail({ error: true, message: "Email ja cadastrado." });
     }
-  }, [isSuccess]);
+  }, [isPending]);
 
   // const handleNewUser = async (event: React.FormEvent) => {
   //   event.preventDefault();
