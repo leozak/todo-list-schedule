@@ -66,13 +66,13 @@ const SidebarCallendar = () => {
         <div className="flex flex-row gap-1">
           <button
             onClick={handlePrevMonth}
-            className="bg-zinc-700 hover:bg-zinc-600 rounded-sm hover:cursor-pointer"
+            className="bg-zinc-300/80 hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 rounded-sm hover:cursor-pointer"
           >
             <HiChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={handleNextMonth}
-            className="bg-zinc-700 hover:bg-zinc-600 rounded-sm hover:cursor-pointer"
+            className="bg-zinc-300/80 hover:bg-zinc-300 dark:bg-zinc-700 dark:hover:bg-zinc-600 rounded-sm hover:cursor-pointer"
           >
             <HiChevronRight className="w-5 h-5" />
           </button>
@@ -99,12 +99,12 @@ const SidebarCallendar = () => {
             }}
             key={index}
             className={`
-              relative text-center justify-center hover:bg-zinc-700 rounded-md proportional-nums py-1 hover:cursor-pointer
-              ${_day == day ? "bg-zinc-700" : "bg-zinc-800"}`}
+              relative text-center justify-center hover:bg-zinc-300 dark:hover:bg-zinc-700 rounded-md proportional-nums py-1 hover:cursor-pointer
+              ${_day == day ? "bg-zinc-300 dark:bg-zinc-700" : "bg-zinc-300/50 dark:bg-zinc-800"}`}
           >
             {_day}
             {daysHasTasks[_day - 1] && (
-              <div className="absolute bg-zinc-300/50 w-3 h-0.5 bottom-1 left-2 rounded-full"></div>
+              <div className="absolute bg-zinc-500 dark:bg-zinc-300/50 w-3 h-0.5 bottom-1 left-2 rounded-full"></div>
             )}
           </div>
         ))}
