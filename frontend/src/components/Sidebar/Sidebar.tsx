@@ -7,6 +7,7 @@ import {
 } from "react-icons/tb";
 import SidebarSignout from "./SidebarSignout";
 import SidebarUser from "./SidebarUser";
+import SidebarInfo from "./SidebarInfo";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -51,6 +52,9 @@ const Sidebar = () => {
           ${isCollapsed ? "flex-col gap-y-4" : "flex-row-reverse gap-x-4"}
         `}
       >
+        {/* INFO */}
+        <SidebarInfo />
+
         {/* USER MENU */}
         <SidebarUser />
 
