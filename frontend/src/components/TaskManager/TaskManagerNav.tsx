@@ -111,7 +111,7 @@ const TaskManagerNav = ({ search, setSearch }: TaskManagerNavProps) => {
             <div className="flex flex-row gap-1 my-1">
               <button
                 onClick={handleNow}
-                title="Retroceder um dia"
+                title="Ir para o dia atual"
                 className="bg-zinc-400/40 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 p-1 rounded-sm hover:cursor-pointer active:scale-90"
               >
                 <FaCrosshairs className="w-4 h-4 mx-0.5" />
@@ -150,7 +150,7 @@ const TaskManagerNav = ({ search, setSearch }: TaskManagerNavProps) => {
               {theme === "dark" ? (
                 <button
                   onClick={() => toggleTheme("light")}
-                  title="Retroceder um dia"
+                  title="Mudar para tema claro"
                   className="bg-zinc-400/40 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 p-1 rounded-sm hover:cursor-pointer active:scale-90"
                 >
                   <MdOutlineLightMode className="w-5 h-5" />
@@ -158,7 +158,7 @@ const TaskManagerNav = ({ search, setSearch }: TaskManagerNavProps) => {
               ) : (
                 <button
                   onClick={() => toggleTheme("dark")}
-                  title="Retroceder um dia"
+                  title="Mudar para tema escuro"
                   className="bg-zinc-400/40 hover:bg-zinc-400 dark:bg-zinc-700 dark:hover:bg-zinc-600 p-1 rounded-sm hover:cursor-pointer active:scale-90"
                 >
                   <MdOutlineDarkMode className="w-5 h-5" />

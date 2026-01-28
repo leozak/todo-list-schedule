@@ -1,6 +1,7 @@
 import { useState } from "react";
 import TaskManagerNav from "./TaskManagerNav";
 import TaskManagerView from "./TaskManagerView";
+import TaskManagerNewTask from "./TaskManagerNewTask";
 
 const TaskManager = () => {
   const [search, setSearch] = useState<string>("");
@@ -9,6 +10,8 @@ const TaskManager = () => {
       <TaskManagerNav search={search} setSearch={setSearch} />
 
       <TaskManagerView search={search} />
+
+      <TaskManagerNewTask />
     </div>
   );
 };

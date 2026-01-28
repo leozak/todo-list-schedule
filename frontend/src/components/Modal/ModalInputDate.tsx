@@ -1,12 +1,12 @@
 import type { InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface ModalInputTextProps extends InputHTMLAttributes<HTMLInputElement> {
+interface ModalInputDateProps extends InputHTMLAttributes<HTMLInputElement> {
   title?: string;
   error?: string | null;
 }
 
-const ModalInputText = ({ title, error, ...rest }: ModalInputTextProps) => {
+const ModalInputDate = ({ title, error, ...rest }: ModalInputDateProps) => {
   return (
     <div className="mb-1">
       {title && (
@@ -19,7 +19,7 @@ const ModalInputText = ({ title, error, ...rest }: ModalInputTextProps) => {
       )}
       <input
         {...rest}
-        type="text"
+        type="date"
         className={twMerge(
           "w-full rounded-md bg-zinc-300 focus:bg-zinc-300/80 dark:bg-zinc-800 dark:focus:bg-zinc-900/80 dark:text-zinc-100 py-1 px-2 text-xs sm:text-sm leading-tight focus:shadow-outline focus:outline-none",
           rest.className,
@@ -34,4 +34,4 @@ const ModalInputText = ({ title, error, ...rest }: ModalInputTextProps) => {
   );
 };
 
-export default ModalInputText;
+export default ModalInputDate;
