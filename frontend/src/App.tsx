@@ -49,7 +49,7 @@ function App() {
             <Login />
           ) : (
             <DateProvider>
-              <div className="flex h-screen bg-zinc-300 dark:bg-zinc-800">
+              <div className="flex min-h-screen bg-zinc-300 dark:bg-zinc-800">
                 <Sidebar />
                 <TaskManager />
               </div>

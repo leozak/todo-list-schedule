@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TiPlus } from "react-icons/ti";
+
 import { Modal } from "../Modal";
-
 import { useNewTask } from "../../hooks/useTasks";
-
-const nowDate = new Date();
+import { DateContext } from "../../contexts/DateContext";
 
 const TaskManagerNewTask = () => {
   const [addNewTask, setAddNewTask] = useState<boolean>(false);
@@ -18,7 +17,16 @@ const TaskManagerNewTask = () => {
 
   const [errorTitle, setErrorTitle] = useState<string | null>(null);
 
-  const { data, mutate, isSuccess, isPending, error } = useNewTask();
+  const { data, mutate, isPending } = useNewTask();
+
+  const { year, month, day } = useContext(DateContext);
+
+  const nowDate: string =
+    year +
+    "-" +
+    (month < 9 ? "0" + (month + 1) : month + 1) +
+    "-" +
+    (day < 10 ? "0" + day : day);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -51,7 +59,6 @@ const TaskManagerNewTask = () => {
   };
 
   useEffect(() => {
-    console.log(data);
     if (data?.success) {
       setAddNewTask(false);
     }
@@ -77,14 +84,7 @@ const TaskManagerNewTask = () => {
     setErrorTitle(null);
     setDescription("");
     setTags([]);
-    setDate(
-      nowDate.getFullYear() +
-        "-" +
-        (nowDate.getMonth() < 9 ? "0" : "") +
-        (nowDate.getMonth() + 1) +
-        "-" +
-        nowDate.getDate(),
-    );
+    setDate(nowDate);
     setDone(false);
   }, [addNewTask]);
 
@@ -93,7 +93,7 @@ const TaskManagerNewTask = () => {
       {/* ADD NEW TASK BUTTON */}
       <button
         onClick={() => setAddNewTask(true)}
-        className="absolute text-zinc-200 bg-zinc-500/90 hover:bg-zinc-600/60 dark:hover:bg-zinc-500 bottom-3 right-15 p-3 shadow-md active:shadow-sm shadow-black rounded-full active:scale-90 hover:cursor-pointer"
+        className="fixed text-zinc-200 bg-zinc-500/90 hover:bg-zinc-600/60 dark:hover:bg-zinc-500 bottom-3 right-15 p-3 shadow-md active:shadow-sm shadow-black rounded-full active:scale-90 hover:cursor-pointer"
       >
         <TiPlus className="w-6 h-6" />
       </button>

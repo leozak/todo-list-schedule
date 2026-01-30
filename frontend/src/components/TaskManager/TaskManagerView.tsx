@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { useTasks } from "../../hooks/useTasks";
 import type { Task } from "../../interfaces/tasks";
 import { DateContext } from "../../contexts/DateContext";
+import TaskManagerViewTaskCard from "./TaskManagerViewTaskCard";
 
 interface TaskManagerViewProps {
   search: string;
@@ -52,13 +53,19 @@ const TaskManagerView = ({ search }: TaskManagerViewProps) => {
   }, [search, dailyTasks]);
 
   return (
-    <div>
-      {filteredTasks.map((task) => (
-        <div key={task.id}>
-          {task.title} - {task.date}
+    <>
+      {filteredTasks.length === 0 && (
+        <div className="flex justify-center items-center">
+          <h2 className="mt-15">Não há tarefas à serem exibidas.</h2>
         </div>
-      ))}
-    </div>
+      )}
+
+      <div className="p-4">
+        {filteredTasks.map((task) => (
+          <TaskManagerViewTaskCard key={task.id} {...task} />
+        ))}
+      </div>
+    </>
   );
 };
 

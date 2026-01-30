@@ -13,7 +13,7 @@ const ModalRoot = ({ children }: ModalRootProps) => {
         {/* bg-zinc-200 */}
         <div
           className="
-            relative bg-gradient-to-br m-5 p-6 rounded-2xl shadow-xl shadow-black
+            relative bg-linear-to-br m-5 p-6 rounded-2xl shadow-xl shadow-black
             sm:m-20
             w-xl max-w-xl
             text-zinc-700

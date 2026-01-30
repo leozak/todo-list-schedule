@@ -19,47 +19,49 @@ const Sidebar = () => {
                   ${isCollapsed ? "min-w-14" : "min-w-60"}
                   dark:bg-zinc-900`}
     >
-      <div className="flex items-center mb-6">
-        {/* COLLAPSE  BUTTON */}
-        {isCollapsed ? (
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hover:text-zinc-600 dark:hover:text-zinc-50 hover:cursor-pointer"
-          >
-            <TbLayoutSidebarLeftExpandFilled className="w-8 h-8" />
-          </button>
-        ) : (
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="hover:text-zinc-600 dark:hover:text-zinc-50 hover:cursor-pointer"
-          >
-            <TbLayoutSidebarLeftCollapseFilled className="w-8 h-8" />
-          </button>
-        )}
+      <div className="fixed min-h-full">
+        <div className="flex items-center mb-6">
+          {/* COLLAPSE  BUTTON */}
+          {isCollapsed ? (
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hover:text-zinc-600 dark:hover:text-zinc-50 hover:cursor-pointer"
+            >
+              <TbLayoutSidebarLeftExpandFilled className="w-8 h-8" />
+            </button>
+          ) : (
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hover:text-zinc-600 dark:hover:text-zinc-50 hover:cursor-pointer"
+            >
+              <TbLayoutSidebarLeftCollapseFilled className="w-8 h-8" />
+            </button>
+          )}
 
-        {/* TITLE */}
-        {!isCollapsed && (
-          <h1 className="font-semibold text-lg w-full text-center mr-6">
-            Tarefas
-          </h1>
-        )}
-      </div>
-      {isCollapsed ? <SidebarCollapsed /> : <SidebarExpanded />}
+          {/* TITLE */}
+          {!isCollapsed && (
+            <h1 className="font-semibold text-lg w-full text-center mr-6">
+              Tarefas
+            </h1>
+          )}
+        </div>
+        {isCollapsed ? <SidebarCollapsed /> : <SidebarExpanded />}
 
-      <div
-        className={`
-          absolute flex bottom-4 items-center
+        <div
+          className={`
+          absolute flex bottom-6 items-center
           ${isCollapsed ? "flex-col gap-y-4" : "flex-row-reverse gap-x-4"}
         `}
-      >
-        {/* INFO */}
-        <SidebarInfo />
+        >
+          {/* INFO */}
+          <SidebarInfo />
 
-        {/* USER MENU */}
-        <SidebarUser />
+          {/* USER MENU */}
+          <SidebarUser />
 
-        {/* SAIR */}
-        <SidebarSignout />
+          {/* SAIR */}
+          <SidebarSignout />
+        </div>
       </div>
     </div>
   );
