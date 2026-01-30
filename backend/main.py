@@ -236,9 +236,11 @@ async def update_user(user: UserUpdateSchema, token: str = Depends(oauth2_scheme
         }
 
 
-
 #
 # Retorna todas as tasks de um usuário
+class GetTasksSchema(BaseModel):
+    email: str
+
 @app.get("/tasks/{email}")
 async def get_tasks(email: str, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """Listagem de todas as tasks do usuário."""
