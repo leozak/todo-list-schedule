@@ -1,9 +1,9 @@
-import SidebarCallendar from "./SidebarCalendar";
+import SidebarCalendar from "./SidebarCalendar";
 
 const SidebarExpanded = () => {
   return (
     <div className="">
-      <SidebarCallendar />
+      <SidebarCalendar />
     </div>
   );
 };
