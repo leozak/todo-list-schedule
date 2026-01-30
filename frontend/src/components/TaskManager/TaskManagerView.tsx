@@ -12,7 +12,7 @@ interface TaskManagerViewProps {
 const email: string = localStorage.getItem("email") as string;
 
 const TaskManagerView = ({ search }: TaskManagerViewProps) => {
-  const { data, isPending, isSuccess } = useTasks(email);
+  const { data, isPending } = useTasks(email);
   const [tasks, setTasks] = useState<Omit<Task, "email">[]>([]);
   const [dailyTasks, setDailyTasks] = useState<Omit<Task, "email">[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Omit<Task, "email">[]>([]);
@@ -54,6 +54,11 @@ const TaskManagerView = ({ search }: TaskManagerViewProps) => {
 
   return (
     <>
+      {isPending && (
+        <div className="flex justify-center items-center">
+          <h2 className="mt-15">Carregando tarefas...</h2>
+        </div>
+      )}
       {filteredTasks.length === 0 && (
         <div className="flex justify-center items-center">
           <h2 className="mt-15">Não há tarefas à serem exibidas.</h2>

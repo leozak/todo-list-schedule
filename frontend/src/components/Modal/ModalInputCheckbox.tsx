@@ -1,6 +1,4 @@
 import type { InputHTMLAttributes } from "react";
-import { GiCheckMark } from "react-icons/gi";
-import { ImCheckmark } from "react-icons/im";
 import { PiCheckFatFill } from "react-icons/pi";
 import { twMerge } from "tailwind-merge";
 

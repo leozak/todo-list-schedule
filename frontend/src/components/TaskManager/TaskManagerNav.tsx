@@ -1,16 +1,13 @@
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { useContext, useRef, useState } from "react";
 
-import Theme from "../Theme/Theme";
 import { DateContext } from "../../contexts/DateContext";
 import { useTheme } from "../../contexts/ThemeContext";
 
 import { months } from "../../sets/calendar";
 import { FaCrosshairs, FaSearch } from "react-icons/fa";
-import { RiCrosshair2Fill } from "react-icons/ri";
-import { IoClose, IoSearch } from "react-icons/io5";
+import { IoClose } from "react-icons/io5";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { LuSearchX } from "react-icons/lu";
 
 const nowDate = new Date();
 

@@ -1,10 +1,5 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  type QueryKey,
-} from "@tanstack/react-query";
-import type { AxiosPromise, AxiosError } from "axios";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { AxiosPromise } from "axios";
 
 import { api } from "../services/api";
 
@@ -13,11 +8,6 @@ import type {
   NewTaskResponse,
   TasksResponse,
 } from "../interfaces/tasks";
-
-const getTasks = async (email: string): AxiosPromise<TasksResponse> => {
-  const response = await api.get<TasksResponse>(`/tasks/${email}`);
-  return response;
-};
 
 export const useTasks = (email: string) => {
   const query = useQuery({

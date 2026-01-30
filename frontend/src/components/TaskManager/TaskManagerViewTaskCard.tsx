@@ -44,6 +44,7 @@ const TaskManagerViewTaskCard = ({
               <p className="text-zinc-400">{pin ? "true" : "false"}</p>
               <p className="text-zinc-400">{done ? "true" : "false"}</p>
               <p className="text-zinc-400">{date}</p>
+              <p className="text-zinc-400">{id}</p>
             </div>
           )}
         </div>
