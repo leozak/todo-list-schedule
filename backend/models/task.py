@@ -9,16 +9,16 @@ class Task(Base):
     id = Column("id", Integer, primary_key=True, autoincrement=True)
     title = Column("title", String)
     description = Column("description", String)
-    priority = Column("priority", Integer)
+    tags = Column("tags", String)
     pin = Column("pin", Boolean)
     done = Column("done", Boolean)
     email = Column("email", ForeignKey("user.email"))
     date = Column("date", String)
 
-    def __init__(self, title, description, email, priority=0, date=datetime.isoformat(datetime.now(), timespec="seconds"), pin=False, done=False):
+    def __init__(self, title, email, tags="", description = "", date=datetime.isoformat(datetime.now(), timespec="seconds"), pin=False, done=False):
         self.title = title
         self.description = description
-        self.priority = priority
+        self.tags = tags
         self.pin = pin
         self.done = done
         self.email = email

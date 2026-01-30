@@ -1,4 +1,4 @@
-import SidebarCallendar from "./SidebarCallendar";
+import SidebarCallendar from "./SidebarCalendar";
 
 const SidebarExpanded = () => {
   return (

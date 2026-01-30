@@ -1,12 +1,12 @@
 import type { InputHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
-interface ModalInputTextProps extends InputHTMLAttributes<HTMLInputElement> {
+interface ModalTextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   title?: string;
   error?: string | null;
 }
 
-const ModalInputText = ({ title, error, ...rest }: ModalInputTextProps) => {
+const ModalTextArea = ({ title, error, ...rest }: ModalTextAreaProps) => {
   return (
     <div className="mb-1">
       {title && (
@@ -17,14 +17,15 @@ const ModalInputText = ({ title, error, ...rest }: ModalInputTextProps) => {
           {title}
         </label>
       )}
-      <input
+      <textarea
         {...rest}
-        type="text"
         className={twMerge(
           "w-full rounded-md bg-zinc-300 focus:bg-zinc-300/80 dark:bg-zinc-800 dark:focus:bg-zinc-900/80 dark:text-zinc-100 py-1 px-2 text-xs sm:text-sm leading-tight focus:shadow-outline focus:outline-none",
           rest.className,
         )}
-      />
+      >
+        {rest.value}
+      </textarea>
       {error && (
         <p className="text-red-600/70 dark:text-red-400/70 text-xs ml-2 mt-1">
           {error}
@@ -34,4 +35,4 @@ const ModalInputText = ({ title, error, ...rest }: ModalInputTextProps) => {
   );
 };
 
-export default ModalInputText;
+export default ModalTextArea;

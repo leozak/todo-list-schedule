@@ -179,10 +179,9 @@ async def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
         else:
             hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
             new_user = User(name=user.name, email=user.email, password=hashed_password)
-            
-            add_first_task = Task(title="Resolva o que é crítico agora", description="A prioridade Urgente deve ser usada para tarefas que exigem atenção imediata, como prazos que vencem hoje ou problemas que impedem seu progresso. Se não pode esperar, é urgente.", priority=0, pin=True, done=False, email=user.email, date="2026-01-09")
-            add_secound_task = Task(title="Organize suas metas principais", description="A prioridade Importante é para atividades que trazem valor real ao seu projeto. Use para tarefas que têm prazo definido, mas não são emergências. A maior parte do seu trabalho deve estar aqui.", priority=1, pin=True, done=False, email=user.email, date="2026-01-09")
-            add_tird_task = Task(title="Ideias para quando sobrar tempo", description="A prioridade Opcional serve para ideias, melhorias desejáveis (nice-to-have) ou tarefas sem prazo. São coisas que você gostaria de fazer, mas não afetarão seu projeto se ficarem para depois.", priority=2, pin=True, done=False, email=user.email, date="2026-01-09")
+            add_first_task = Task(title="Resolva o que é crítico agora", description="A prioridade Urgente deve ser usada para tarefas que exigem atenção imediata, como prazos que vencem hoje ou problemas que impedem seu progresso. Se não pode esperar, é urgente.", tags="Amigos,Urgente", pin=True, done=False, email=user.email, date=datetime.isoformat(datetime.now(), timespec="seconds"))
+            add_secound_task = Task(title="Organize suas metas principais", description="A prioridade Importante é para atividades que trazem valor real ao seu projeto. Use para tarefas que têm prazo definido, mas não são emergências. A maior parte do seu trabalho deve estar aqui.", tags="Estudos,Importante", pin=True, done=False, email=user.email, date=datetime.isoformat(datetime.now(), timespec="seconds"))
+            add_tird_task = Task(title="Ideias para quando sobrar tempo", description="A prioridade Opcional serve para ideias, melhorias desejáveis (nice-to-have) ou tarefas sem prazo. São coisas que você gostaria de fazer, mas não afetarão seu projeto se ficarem para depois.", tags="Tabalho,Urgente", pin=True, done=False, email=user.email, date=datetime.isoformat(datetime.now(), timespec="seconds"))
 
             db.add(new_user)
             db.commit()
@@ -237,21 +236,23 @@ async def update_user(user: UserUpdateSchema, token: str = Depends(oauth2_scheme
         }
 
 
-
 #
 # Retorna todas as tasks de um usuário
-@app.get("/tasks/{username}")
-async def get_tasks(username: str, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+class GetTasksSchema(BaseModel):
+    email: str
+
+@app.get("/tasks/{email}")
+async def get_tasks(email: str, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """Listagem de todas as tasks do usuário."""
     user = verify_token(token, db)
     if not user:
         raise HTTPException(status_code=401, detail={"success": False, "message": "User not authenticated."})
-    tasks = db.query(Task).filter(Task.username == username).order_by(Task.date).all()
+    tasks = db.query(Task).filter(Task.email == email).order_by(Task.pin.desc(), Task.date).all()
 
     if not tasks:
         return {
             "success": False,
-            "message": "Message not found",
+            "message": "Tasks not found",
             "tasks": []
         }
 
@@ -260,7 +261,7 @@ async def get_tasks(username: str, token: str = Depends(oauth2_scheme), db: Sess
             "id": task.id,
             "title": task.title,
             "description": task.description,
-            "priority": task.priority,
+            "tags": task.tags,
             "pin": task.pin,
             "done": task.done,
             "date": task.date
@@ -268,7 +269,11 @@ async def get_tasks(username: str, token: str = Depends(oauth2_scheme), db: Sess
         for task in tasks
     ]
 
-    return tasks_list
+    return {
+        "success": True,
+        "message": "Tasks found",
+        "tasks": tasks_list
+    }
 
 
 #
@@ -276,17 +281,21 @@ async def get_tasks(username: str, token: str = Depends(oauth2_scheme), db: Sess
 class TaskCreateSchema(BaseModel):
     title: str
     description: str
-    priority: int
+    tags: str
     pin: bool
     done: bool
-    username: str
+    email: str
     date: str
 
 @app.post("/tasks/create", status_code=201)
-async def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
+async def create_task(task: TaskCreateSchema, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """Cria uma nova task."""
+    user_data = verify_token(token, db)
+    if not user_data:
+        raise HTTPException(status_code=401, detail={"success": False, "message": "User not authenticated."})
     try:
-        new_task = Task(title=task.title, description=task.description, priority=task.priority, pin=task.pin, done=task.done, date=task.date, username=task.username)
+        new_task = Task(title=task.title, description=task.description, tags=task.tags, pin=task.pin, done=task.done, date=task.date, email=task.email)
+        print("new_task", new_task)
         db.add(new_task)
         db.commit()
         return {
@@ -295,11 +304,11 @@ async def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
             "id": new_task.id,
             "title": new_task.title,
             "description": new_task.description,
-            "priority": new_task.priority,
+            "tags": new_task.tags,
             "pin": new_task.pin,
-            "date": new_task.date,
             "done": new_task.done,
-            "username": new_task.username
+            "date": new_task.date,
+            "email": new_task.email
         }
     except Exception as e:
         db.rollback()

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { months, week } from "../../sets/callendar";
+import { months, week } from "../../sets/calendar";
 import { DateContext } from "../../contexts/DateContext";
 import { FaCalendarAlt } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";

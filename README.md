@@ -8,24 +8,38 @@
 
 ## Tecnologias
 
-- **Frontend:** React + Vite
-- **Backend:** FastAPI + Python
-- **Infraestrutura:** Google Cloud (Cloud Run + Cloud Storage)
+### Backend
 
-## Bibliotecas Utilizadas
+O backend é construído em Python utilizando o framework FastAPI.
+
+**Principais Bibliotecas e Ferramentas:**
+
+- **FastAPI:** Framework web moderno e rápido para construção de APIs.
+- **Uvicorn / Gunicorn:** Servidores ASGI/WSGI para execução da aplicação.
+- **SQLAlchemy:** ORM (Object Relational Mapper) para interação com o banco de dados.
+- **Pydantic:** Biblioteca para validação de dados e configurações.
+- **Psycopg2:** Adaptador de banco de dados PostgreSQL.
+- **Python-Jose:** Para implementação de autenticação JWT.
 
 ### Frontend
 
-- **react-icons:** biblioteca de icons.
-- **tailwindcss:** framework de estilização.
-- **class-variance-authority:** gerenciamento de classes de estilização.
-- **react-toastify**: biblioteca de notificação.
+O frontend é uma SPA (Single Page Application) construída com React.
 
-### Backend
+**Principais Bibliotecas e Ferramentas:**
 
-- **fastapi:** construtor da API.
-- **sqlalchemy:** ORM para o banco de dados.
-- **pydantic:** validação de dados.
+- **Vite:** Ferramenta de build e servidor de desenvolvimento rápido.
+- **TypeScript:** Superset de JavaScript que adiciona tipagem estática.
+- **Tailwind CSS (v4):** Framework de utilitários CSS para estilização.
+- **TanStack Query (React Query):** Gerenciamento de estado de servidor e data fetching eficiente.
+- **Axios:** Cliente HTTP para requisições à API.
+- **React Icons:** Biblioteca de ícones populares.
+- **React Toastify:** Para notificações (toasts) no frontend.
+
+### Infraestrutura
+
+- **Docker & Docker Compose:** Para containerização e orquestração dos serviços (Backend, Frontend e Banco de Dados).
+- **PostgreSQL:** Banco de dados relacional.
+- **Nginx:** Servidor web para servir o frontend em produção (configuração presente).
 
 ## Desenvolvimento Local
 
