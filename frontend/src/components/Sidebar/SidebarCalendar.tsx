@@ -4,7 +4,7 @@ import { DateContext } from "../../contexts/DateContext";
 import { FaCalendarAlt } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
-const SidebarCallendar = () => {
+const SidebarCalendar = () => {
   const { year, setYear, month, setMonth, day, setDay } =
     useContext(DateContext);
 
@@ -113,4 +113,4 @@ const SidebarCallendar = () => {
   );
 };
 
-export default SidebarCallendar;
+export default SidebarCalendar;
