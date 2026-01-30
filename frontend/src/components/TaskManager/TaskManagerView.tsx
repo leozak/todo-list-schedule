@@ -12,12 +12,14 @@ interface TaskManagerViewProps {
 const email: string = localStorage.getItem("email") as string;
 
 const TaskManagerView = ({ search }: TaskManagerViewProps) => {
-  const { data, isPending } = useTasks(email);
+  const { data, isLoading } = useTasks(email);
   const [tasks, setTasks] = useState<Omit<Task, "email">[]>([]);
   const [dailyTasks, setDailyTasks] = useState<Omit<Task, "email">[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Omit<Task, "email">[]>([]);
 
   const { year, month, day } = useContext(DateContext);
+
+  const [dots, setDots] = useState<string>("");
 
   const filterDate = (date: string) => {
     setDailyTasks(tasks.filter((task) => task.date.substring(0, 10) === date));
@@ -52,13 +54,33 @@ const TaskManagerView = ({ search }: TaskManagerViewProps) => {
     filterSearch(search);
   }, [search, dailyTasks]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots((prevDots) => {
+        if (prevDots.length === 3) {
+          return "";
+        }
+        return prevDots + ".";
+      });
+    }, 600);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
-      {isPending && (
-        <div className="flex justify-center items-center">
-          <h2 className="mt-15">Carregando tarefas...</h2>
+      {isLoading && (
+        <div className="flex items-center justify-center h-screen">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-15 w-15 border-b-2 border-zinc-900 dark:border-zinc-100"></div>
+            <div className="flex text-2xl text-zinc-900 dark:text-zinc-100 mt-6">
+              <div>Carregando</div>
+              <div className="w-5">{dots}</div>
+            </div>
+          </div>
         </div>
       )}
+
       {filteredTasks.length === 0 && (
         <div className="flex justify-center items-center">
           <h2 className="mt-15">Não há tarefas à serem exibidas.</h2>
