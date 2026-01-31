@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { useTheme } from "./contexts/ThemeContext";
-
-import ServerGuard from "./components/ServerGuard/ServerGuard";
-
 import { api } from "./services/api";
 
+import ServerGuard from "./components/ServerGuard/ServerGuard";
 import Login from "./features/Auth/Login";
-
 import DateProvider from "./contexts/DateContext";
 import Sidebar from "./components/Sidebar/Sidebar";
 import TaskManager from "./components/TaskManager/TaskManager";

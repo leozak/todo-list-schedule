@@ -4,6 +4,7 @@ import React, {
   type InputHTMLAttributes,
   type KeyboardEvent,
 } from "react";
+import { colors } from "../../sets/colors";
 
 interface ModalInputTagsProps extends InputHTMLAttributes<HTMLInputElement> {
   tags: string[];
@@ -74,7 +75,8 @@ const ModalInputTags = ({
         {tags.map((tag, index) => (
           <span
             key={index}
-            className="inline-flex dark:text-zinc-300 bg-zinc-400 dark:bg-zinc-700 text-xs sm:text-sm font-medium rounded-md items-center gap-1 px-2"
+            className={`inline-flex dark:text-zinc-300  text-xs sm:text-sm font-medium rounded-md items-center gap-1 px-2
+                        ${colors[index % colors.length]}`}
           >
             {tag}
             <button

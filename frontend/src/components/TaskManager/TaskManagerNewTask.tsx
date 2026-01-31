@@ -31,7 +31,7 @@ const TaskManagerNewTask = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (title !== "" && description !== "" && tags.length === 0) {
+    if (title === "" && description === "" && tags.length === 0) {
       setAddNewTask(false);
       return;
     }
@@ -92,8 +92,10 @@ const TaskManagerNewTask = () => {
     <>
       {/* ADD NEW TASK BUTTON */}
       <button
+        type="button"
+        title="Nova tarefa"
         onClick={() => setAddNewTask(true)}
-        className="fixed text-zinc-200 bg-zinc-500/90 hover:bg-zinc-600/60 dark:hover:bg-zinc-500 bottom-3 right-15 p-3 shadow-md active:shadow-sm shadow-black rounded-full active:scale-90 hover:cursor-pointer"
+        className="fixed text-zinc-200 bg-zinc-600/90 hover:bg-zinc-700/90 dark:hover:bg-zinc-500 bottom-3 right-4 p-3 shadow-md active:shadow-sm shadow-black rounded-full active:scale-90 hover:cursor-pointer"
       >
         <TiPlus className="w-6 h-6" />
       </button>
@@ -109,7 +111,7 @@ const TaskManagerNewTask = () => {
           )}
           <Modal.Header>
             <Modal.Title title="Nova Tarefa" />
-            <Modal.Close callbackClose={() => setAddNewTask(false)} />
+            <Modal.Close callbackClose={handleClose} />
           </Modal.Header>
           <Modal.Body>
             <Modal.InputText
@@ -135,7 +137,7 @@ const TaskManagerNewTask = () => {
               className="mt-2"
             />
             <Modal.InputCheckbox
-              label="Concluida"
+              label="Tarefa concluida"
               checked={done}
               onChange={(e) => setDone(e.target.checked)}
               className="mt-2"

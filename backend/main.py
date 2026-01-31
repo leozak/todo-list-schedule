@@ -247,7 +247,7 @@ async def get_tasks(email: str, token: str = Depends(oauth2_scheme), db: Session
     user = verify_token(token, db)
     if not user:
         raise HTTPException(status_code=401, detail={"success": False, "message": "User not authenticated."})
-    tasks = db.query(Task).filter(Task.email == email).order_by(Task.pin.desc(), Task.date).all()
+    tasks = db.query(Task).filter(Task.email == email).order_by(Task.done, Task.pin.desc(), Task.date).all()
 
     if not tasks:
         return {
@@ -394,8 +394,11 @@ class TaskDoneSchema(BaseModel):
     done: bool
 
 @app.patch("/tasks/done/{id}")
-async def done_task(id: int, task: TaskDoneSchema, db: Session = Depends(get_db)):
+async def done_task(id: int, task: TaskDoneSchema, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """Muda o status de conclusão de uma task."""
+    user_data = verify_token(token, db)
+    if not user_data:
+        raise HTTPException(status_code=401, detail={"success": False, "message": "User not authenticated."})
     try:
         db.query(Task).filter(Task.id == id).update({"done": task.done})
         db.commit()
@@ -421,8 +424,11 @@ class TaskPinSchema(BaseModel):
     pin: bool
 
 @app.patch("/tasks/pin/{id}")
-async def pin_task(id: int, task: TaskPinSchema, db: Session = Depends(get_db)):
+async def pin_task(id: int, task: TaskPinSchema, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     """Fixa ou desafixa uma tarefa."""
+    user_data = verify_token(token, db)
+    if not user_data:
+        raise HTTPException(status_code=401, detail={"success": False, "message": "User not authenticated."})
     try:
         db.query(Task).filter(Task.id == id).update({"pin": task.pin})
         db.commit()

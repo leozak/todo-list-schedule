@@ -1,25 +1,21 @@
 import type { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface ModalRootProps {
   children: ReactNode;
+  className?: string;
 }
 
-const ModalRoot = ({ children }: ModalRootProps) => {
+const ModalRoot = ({ children, className }: ModalRootProps) => {
   return (
     <>
       <div className="fixed flex z-10 inset-0 justify-center items-center opacity-90 transition-colors bg-black/90 backdrop-blur-sm"></div>
       <div className="fixed flex inset-0 z-20 justify-center items-center">
-        {/* dark:bg-zinc-700 */}
-        {/* bg-zinc-200 */}
         <div
-          className="
-            relative bg-linear-to-br m-5 p-6 rounded-2xl shadow-xl shadow-black
-            sm:m-20
-            w-xl max-w-xl
-            text-zinc-700
-            from-zinc-200/80 to-zinc-200/30
-            dark:text-zinc-300/85
-            dark:from-zinc-600 dark:to-zinc-700/65"
+          className={twMerge(
+            "relative bg-linear-to-br m-5 p-6 rounded-2xl shadow-xl shadow-black sm:m-20 w-xl max-w-xl text-zinc-700 from-zinc-200/80 to-zinc-200/30 dark:text-zinc-300/85 dark:from-zinc-600 dark:to-zinc-700/65",
+            className,
+          )}
         >
           {children}
         </div>
