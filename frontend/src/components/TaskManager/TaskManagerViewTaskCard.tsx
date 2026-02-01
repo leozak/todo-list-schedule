@@ -17,6 +17,7 @@ import {
 } from "../../hooks/useTasks";
 import { Modal } from "../Modal";
 import TaskManagerEditTask from "./TaskManagerEditTask";
+import { FaArrowsSpin } from "react-icons/fa6";
 
 const colorsLength = colors.length;
 
@@ -36,12 +37,19 @@ const TaskManagerViewTaskCard = ({
   const [_done, set_Done] = useState<boolean>(done);
   const [_pin, set_Pin] = useState<boolean>(pin);
 
-  const { mutateDone, dataDone, isErrorDone, errorDone } = useChangeTaskDone();
+  const { mutateDone, dataDone, isPendingDone, isErrorDone, errorDone } =
+    useChangeTaskDone();
 
-  const { mutatePin, dataPin, isErrorPin, errorPin } = useChangeTaskPin();
+  const { mutatePin, dataPin, isPendingPin, isErrorPin, errorPin } =
+    useChangeTaskPin();
 
-  const { mutateDelete, dataDelete, isErrorDelete, errorDelete } =
-    useTaskDelete();
+  const {
+    mutateDelete,
+    dataDelete,
+    isPendingDelete,
+    isErrorDelete,
+    errorDelete,
+  } = useTaskDelete();
 
   const handleDoneChange = async (id: number) => {
     mutateDone({ id, done: !_done });
@@ -62,44 +70,34 @@ const TaskManagerViewTaskCard = ({
   useEffect(() => {
     if (dataDone?.success) {
       set_Done(dataDone.done as boolean);
-    } else if (!dataDone?.success) {
+    } else if (dataDone?.success == false || isErrorDone) {
       console.log(dataDone?.message);
+      console.log(errorDone);
     }
   }, [dataDone]);
 
   useEffect(() => {
     if (dataPin?.success) {
       set_Pin(dataPin.pin as boolean);
-    } else if (!dataPin?.success) {
+    } else if (dataPin?.success === false || isErrorPin) {
       console.log(dataPin?.message);
+      console.log(errorPin);
     }
   }, [dataPin]);
 
   useEffect(() => {
-    if (!dataDelete?.success) {
+    if (dataDelete?.success == false || isErrorDelete) {
       console.log(dataDelete?.message);
+      console.log(errorDelete);
     }
   }, [dataDelete]);
-
-  useEffect(() => {
-    console.log(errorDone);
-  }, [isErrorDone]);
-
-  useEffect(() => {
-    console.log(errorPin);
-  }, [isErrorPin]);
-
-  useEffect(() => {
-    console.log(errorDelete);
-  }, [isErrorDelete]);
 
   return (
     <>
       <div className="mb-2 text-xs sm:text-sm">
         <div className="group relative flex scale-98 hover:scale-100">
-          <div className="from-purple-300/60 to-blue-300/60 dark:from-purple-900/70 dark:to-blue-900/70 absolute bg-linear-to-br w-full h-full top-0 left-0 z-10 group-hover:blur-sm rounded-md"></div>
           <div
-            className={`text-zinc-900 dark:text-zinc-200 group-hover:bg-zinc-500/90 dark:group-hover:bg-zinc-950/90 w-full z-20 p-1 pl-2 rounded-md
+            className={`z-20 w-full rounded-md p-1 pl-2 text-zinc-900 group-hover:bg-zinc-500/90 dark:text-zinc-200 dark:group-hover:bg-zinc-950/90
             ${showDetails ? "bg-zinc-500/80 dark:bg-zinc-900/90 " : "bg-zinc-400/70 dark:bg-zinc-900"}
             `}
           >
@@ -212,7 +210,14 @@ const TaskManagerViewTaskCard = ({
                         onClick={() => setConfirmDeleteTask(true)}
                         className="text-zinc-700 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-300 hover:cursor-pointer active:scale-90"
                       >
-                        <RiDeleteBinFill className="w-7 h-7" />
+                        <div className="relative">
+                          <div>
+                            <RiDeleteBinFill className="w-7 h-7" />
+                          </div>
+                          <div>
+                            <FaArrowsSpin className="text-orange-700 absolute -top-1 -right-1 w-4 h-4 animate-spin-pulse" />
+                          </div>
+                        </div>
                       </button>
                     </div>
                   </div>

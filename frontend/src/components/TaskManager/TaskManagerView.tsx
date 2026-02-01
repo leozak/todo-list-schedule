@@ -12,14 +12,13 @@ interface TaskManagerViewProps {
 const email: string = localStorage.getItem("email") as string;
 
 const TaskManagerView = ({ search }: TaskManagerViewProps) => {
-  const { data, isLoading } = useTasks(email);
   const [tasks, setTasks] = useState<Omit<Task, "email">[]>([]);
   const [dailyTasks, setDailyTasks] = useState<Omit<Task, "email">[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Omit<Task, "email">[]>([]);
+  const [dots, setDots] = useState<string>("");
 
   const { year, month, day } = useContext(DateContext);
-
-  const [dots, setDots] = useState<string>("");
+  const { data, isLoading } = useTasks(email);
 
   const filterDate = (date: string) => {
     setDailyTasks(tasks.filter((task) => task.date.substring(0, 10) === date));
@@ -41,6 +40,10 @@ const TaskManagerView = ({ search }: TaskManagerViewProps) => {
   useEffect(() => {
     if (data?.tasks) {
       setTasks(data?.tasks);
+      const tagsPopulation = data?.tasks
+        .map((task) => (task.tags.length > 0 ? task.tags : null))
+        .filter((tag) => tag !== null);
+      console.log(tagsPopulation);
     }
   }, [data]);
 

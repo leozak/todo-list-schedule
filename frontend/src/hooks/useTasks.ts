@@ -71,6 +71,7 @@ export const useChangeTaskDone = () => {
   return {
     ...mutateDone,
     mutateDone: mutateDone.mutate,
+    isPendingDone: mutateDone.isPending,
     isErrorDone: mutateDone.isError,
     errorDone: mutateDone.error,
     dataDone: mutateDone.data?.data,
@@ -102,6 +103,7 @@ export const useChangeTaskPin = () => {
   return {
     ...mutatePin,
     mutatePin: mutatePin.mutate,
+    isPendingPin: mutatePin.isPending,
     isErrorPin: mutatePin.isError,
     errorPin: mutatePin.error,
     dataPin: mutatePin.data?.data,
@@ -133,6 +135,7 @@ export const useTaskDelete = () => {
   return {
     ...mutateDelete,
     mutateDelete: mutateDelete.mutate,
+    isPendingDelete: mutateDelete.isPending,
     isErrorDelete: mutateDelete.isError,
     errorDelete: mutateDelete.error,
     dataDelete: mutateDelete.data?.data,
