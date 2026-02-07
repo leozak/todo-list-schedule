@@ -9,7 +9,6 @@ import {
 } from "react-icons/ri";
 import { FaArrowsSpin } from "react-icons/fa6";
 
-import { colors } from "../../sets/colors";
 import type { Task } from "../../interfaces/tasks";
 import {
   useChangeTaskDone,
@@ -20,8 +19,6 @@ import { Modal } from "../Modal";
 import TaskManagerEditTask from "./TaskManagerEditTask";
 
 import { useTags } from "../../contexts/TagsContext";
-
-const colorsLength = colors.length;
 
 const TaskManagerViewTaskCard = ({
   id,
@@ -39,19 +36,12 @@ const TaskManagerViewTaskCard = ({
   const [_done, set_Done] = useState<boolean>(done);
   const [_pin, set_Pin] = useState<boolean>(pin);
 
-  const { mutateDone, dataDone, isPendingDone, isErrorDone, errorDone } =
-    useChangeTaskDone();
+  const { mutateDone, dataDone, isErrorDone, errorDone } = useChangeTaskDone();
 
-  const { mutatePin, dataPin, isPendingPin, isErrorPin, errorPin } =
-    useChangeTaskPin();
+  const { mutatePin, dataPin, isErrorPin, errorPin } = useChangeTaskPin();
 
-  const {
-    mutateDelete,
-    dataDelete,
-    isPendingDelete,
-    isErrorDelete,
-    errorDelete
-  } = useTaskDelete();
+  const { mutateDelete, dataDelete, isErrorDelete, errorDelete } =
+    useTaskDelete();
 
   const { getTagColor } = useTags();
 

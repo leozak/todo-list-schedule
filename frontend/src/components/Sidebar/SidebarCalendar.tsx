@@ -3,13 +3,22 @@ import { months, week } from "../../sets/calendar";
 import { DateContext } from "../../contexts/DateContext";
 import { FaCalendarAlt } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { useTasks } from "../../hooks/useTasks";
+
+const email = localStorage.getItem("email") as string;
 
 const SidebarCalendar = () => {
+  // const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const { year, setYear, month, setMonth, day, setDay } =
     useContext(DateContext);
 
+  const { data } = useTasks(email);
+
   const hasTasks = (_date: string): boolean => {
-    return false;
+    const countTasks = data?.tasks.filter(
+      (task) => task.date.substring(0, 10) === _date
+    );
+    return countTasks?.length ? true : false;
   };
 
   const getDaysInMonth = (month: number, year: number) => {
@@ -31,7 +40,7 @@ const SidebarCalendar = () => {
         "-" +
         (month < 9 ? "0" + (month + 1) : month + 1) +
         "-" +
-        (i + 1 < 10 ? "0" + (i + 1) : i + 1),
+        (i + 1 < 10 ? "0" + (i + 1) : i + 1)
     );
   });
 
@@ -55,9 +64,24 @@ const SidebarCalendar = () => {
 
   return (
     <div>
-      {/* Callendar Navbar */}
-      <div className="flex flex-row rounded-md items-center justify-between">
-        <div className="flex flex-row gap-2 items-center">
+      {/* <div>
+        <div className="flex flex-row items-center gap-x-3">
+          <button
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="relative h-5 w-10 rounded-full bg-zinc-400 hover:cursor-pointer"
+            type="button"
+          >
+            <div
+              className={`${showCalendar ? "translate-x-5" : ""} absolute top-1 left-1 h-3 w-3 rounded-full bg-zinc-700 transition-all`}
+            ></div>
+          </button>
+          <span className="pt-1">Filtrar por data</span>
+        </div>
+      </div>
+      {showCalendar && (
+        <> */}
+      <div className="flex flex-row items-center justify-between rounded-md">
+        <div className="flex flex-row items-center gap-2">
           <FaCalendarAlt />
           <span className="mt-1 font-bold">
             {months[month]} {year}
@@ -109,6 +133,8 @@ const SidebarCalendar = () => {
           </div>
         ))}
       </div>
+      {/* </>
+      )} */}
     </div>
   );
 };
