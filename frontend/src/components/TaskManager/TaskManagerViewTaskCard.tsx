@@ -5,19 +5,21 @@ import {
   RiArrowDownSFill,
   RiArrowUpSFill,
   RiDeleteBinFill,
-  RiFileEditFill,
+  RiFileEditFill
 } from "react-icons/ri";
+import { FaArrowsSpin } from "react-icons/fa6";
 
 import { colors } from "../../sets/colors";
 import type { Task } from "../../interfaces/tasks";
 import {
   useChangeTaskDone,
   useChangeTaskPin,
-  useTaskDelete,
+  useTaskDelete
 } from "../../hooks/useTasks";
 import { Modal } from "../Modal";
 import TaskManagerEditTask from "./TaskManagerEditTask";
-import { FaArrowsSpin } from "react-icons/fa6";
+
+import { useTags } from "../../contexts/TagsContext";
 
 const colorsLength = colors.length;
 
@@ -28,7 +30,7 @@ const TaskManagerViewTaskCard = ({
   tags,
   pin,
   done,
-  date,
+  date
 }: Omit<Task, "email">) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [confirmDeleteTask, setConfirmDeleteTask] = useState<boolean>(false);
@@ -48,8 +50,10 @@ const TaskManagerViewTaskCard = ({
     dataDelete,
     isPendingDelete,
     isErrorDelete,
-    errorDelete,
+    errorDelete
   } = useTaskDelete();
+
+  const { getTagColor } = useTags();
 
   const handleDoneChange = async (id: number) => {
     mutateDone({ id, done: !_done });
@@ -162,12 +166,12 @@ const TaskManagerViewTaskCard = ({
                   </p>
 
                   {tags.length > 0 && (
-                    <div className="flex flex-row flex-wrap mt-1">
+                    <div className="flex flex-row flex-wrap mt-1 gap-y-1">
                       {tags.split(",").map((tag, index) => (
                         <span
                           key={index}
                           className={`text-zinc-900/60 dark:text-zinc-300/80 text-xs py-0.5 px-2 rounded-md mr-1
-                          ${colors[index % colorsLength]}`}
+                          ${getTagColor(tag)}`}
                         >
                           {tag}
                         </span>
